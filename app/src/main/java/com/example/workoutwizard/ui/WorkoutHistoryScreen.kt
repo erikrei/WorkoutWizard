@@ -16,7 +16,7 @@ fun WorkoutHistoryScreen(
         modifier = modifier
     ) {
         NavigationHeader(
-            headerText = R.string.sub_workout_history
+            headerText = R.string.sub_workout_plan
         )
     }
 }

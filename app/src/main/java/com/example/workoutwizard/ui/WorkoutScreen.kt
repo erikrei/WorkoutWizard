@@ -3,6 +3,7 @@ package com.example.workoutwizard.ui
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -10,9 +11,10 @@ import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -23,6 +25,8 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -45,47 +49,63 @@ fun WorkoutScreen(
     modifier: Modifier = Modifier,
     workoutViewModel: WorkoutViewModel = viewModel(),
     addWorkoutNavigation: () -> Unit = {},
-    historyWorkoutNavigation: () -> Unit = {}
+    planWorkoutNavigation: () -> Unit = {}
 ) {
     val uiState by workoutViewModel.uiState.collectAsState()
 
-    Scaffold(
-        floatingActionButton = {
-            TextIconButton(
-                text = R.string.workout_add,
-                icon = R.drawable.add_24,
-                shape = CutCornerShape(
-                    topStart = dimensionResource(id = R.dimen.default_cut_corner_radius),
-                    bottomEnd = dimensionResource(id = R.dimen.default_cut_corner_radius)
-                ),
-                onButtonClick = addWorkoutNavigation
-            )
-        }
+    Column(
+        modifier = modifier
+            .verticalScroll(rememberScrollState())
     ) {
-        innerPadding ->
-            Column(
-                modifier = modifier
-                    .padding(innerPadding)
-                    .verticalScroll(rememberScrollState())
-            ) {
-                NavigationHeader(
-                    headerText = R.string.main_workout_header,
-                    icon = R.drawable.history_48,
-                    onIconClick = historyWorkoutNavigation
-                )
-                MainSpacer()
-                WorkoutProgress(
-                    workoutUiState = uiState
-                )
-                MainSpacer()
-                WorkoutTodayPlanned(
-                    workoutViewModel = workoutViewModel,
-                    addWorkoutNavigation = addWorkoutNavigation,
-                    historyWorkoutNavigation = historyWorkoutNavigation,
-                    workoutUiState = uiState
+        NavigationHeader(
+            headerText = R.string.main_workout_header,
+            sideContent = {
+                WorkoutHeaderSideContent(
+                    onAddClick = addWorkoutNavigation,
+                    onPlanClick = planWorkoutNavigation
                 )
             }
+        )
+        MainSpacer()
+        WorkoutProgress(
+            workoutUiState = uiState
+        )
+        MainSpacer()
+        WorkoutTodayPlanned(
+            workoutViewModel = workoutViewModel,
+            addWorkoutNavigation = addWorkoutNavigation,
+            planWorkoutNavigation = planWorkoutNavigation,
+            workoutUiState = uiState
+        )
     }
+}
+
+@Composable
+fun WorkoutHeaderSideContent(
+    modifier: Modifier = Modifier,
+    onPlanClick: () -> Unit = {},
+    onAddClick: () -> Unit = {}
+) {
+   Row(
+       modifier = modifier
+   ) {
+        IconButton(
+            onClick = onPlanClick
+        ) {
+            Icon(
+                painter = painterResource(id = R.drawable.history_48),
+                contentDescription = stringResource(id = R.string.workout_header_plan_description)
+            )
+        }
+       IconButton(
+           onClick = onAddClick
+       ) {
+           Icon(
+               painter = painterResource(id = R.drawable.add_48),
+               contentDescription = stringResource(id = R.string.workout_header_add_description)
+           )
+       }
+   }
 }
 
 @Composable
@@ -140,7 +160,7 @@ fun WorkoutProgress(
 fun WorkoutTodayEmptyButtons(
     modifier: Modifier = Modifier,
     addWorkoutNavigation: () -> Unit = {},
-    historyWorkoutNavigation: () -> Unit = {}
+    planWorkoutNavigation: () -> Unit = {}
 ) {
     val buttonModifier = Modifier
         .fillMaxWidth()
@@ -162,7 +182,7 @@ fun WorkoutTodayEmptyButtons(
             onButtonClick = addWorkoutNavigation
         )
         TextIconButton(
-            text = R.string.workout_history,
+            text = R.string.workout_plan,
             icon = R.drawable.history_24,
             shape = buttonShape,
             colors = ButtonDefaults.buttonColors(
@@ -171,7 +191,7 @@ fun WorkoutTodayEmptyButtons(
             ),
             fillWidth = true,
             modifier = buttonModifier,
-            onButtonClick = historyWorkoutNavigation
+            onButtonClick = planWorkoutNavigation
         )
     }
 }
@@ -182,7 +202,7 @@ fun WorkoutTodayPlanned(
     workoutViewModel: WorkoutViewModel = viewModel(),
     workoutUiState: WorkoutUiState,
     addWorkoutNavigation: () -> Unit = {},
-    historyWorkoutNavigation: () -> Unit = {}
+    planWorkoutNavigation: () -> Unit = {}
 ) {
     if (workoutUiState.todayWorkouts.isEmpty()) {
         HeaderWithContent(
@@ -190,7 +210,7 @@ fun WorkoutTodayPlanned(
         ) {
             WorkoutTodayEmptyButtons(
                 addWorkoutNavigation = addWorkoutNavigation,
-                historyWorkoutNavigation = historyWorkoutNavigation
+                planWorkoutNavigation = planWorkoutNavigation
             )
         }
     } else {
