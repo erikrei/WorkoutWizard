@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--  General  -->
+    <dimen name="zero_dp">0dp</dimen>
+    <dimen name="default_border_radius">16dp</dimen>
+    <dimen name="same_content_space">8dp</dimen>
+    <dimen name="default_cut_corner_radius">4dp</dimen>
+    <dimen name="spacer_padding">12dp</dimen>
+    <dimen name="card_default_padding">12dp</dimen>
+    <dimen name="container_padding">16dp</dimen>
+    <dimen name="grid_padding">4dp</dimen>
+    <dimen name="default_border_width">2dp</dimen>
+    <dimen name="default_box_border_radius">4dp</dimen>
+
+    <!--  Authentikation  -->
+    <dimen name="auth_column_padding">48dp</dimen>
+    <dimen name="auth_button_cut">4dp</dimen>
+
+    <!--  Workout Card  -->
+    <dimen name="workout_card_space_padding">12dp</dimen>
+
+    <!--  Calories Card  -->
+    <dimen name="calories_card_side_text_width">80dp</dimen>
+
+</resources>

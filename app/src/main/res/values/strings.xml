@@ -1,0 +1,88 @@
+<resources>
+    <string name="app_name">Workout Wizard</string>
+    <string name="icon_text">WW</string>
+
+    <string name="login_header">Login</string>
+    <string name="register_header">Registrieren</string>
+
+    <string name="auth_username_label">Benutzername</string>
+    <string name="auth_password_label">Passwort</string>
+    
+    <string name="auth_change_login">Noch nicht registriert?</string>
+    <string name="auth_change_register">Bereits registriert?</string>
+
+    <string name="init_data_age">Alter</string>
+    <string name="init_data_height">Größe in cm</string>
+    <string name="init_data_weight">Gewicht in kg</string>
+
+    <string name="init_data_input_header">Wir benötigen einige Informationen</string>
+    <string name="init_data_overview_header">Übersicht Dateneingabe</string>
+
+    <string name="init_data_next_button">Zur Übersicht</string>
+    <string name="init_data_back_button">Angaben bearbeiten</string>
+    <string name="init_data_confirm_button">Angaben korrekt</string>
+
+
+    <!--  Main Navigation Title  -->
+    <string name="main_overview_header">Übersicht</string>
+    <string name="main_workout_header">Workout</string>
+    <string name="main_plan_header">Trainingsplan</string>
+    <string name="main_calories_header">Kalorien</string>
+
+    <!--  Sub Navigation Title  -->
+    <string name="sub_workout_add">Workout hinzufügen</string>
+    <string name="sub_workout_history">Verlauf</string>
+
+    <!--  Titel aller Workouts  -->
+        <!-- Krafttraining -->
+    <string name="workout_card_title_pushups">Liegestütze</string>
+    <string name="workout_card_title_situps">Situps</string>
+
+        <!-- Gewichte -->
+    <string name="workout_card_title_pushups_with_dumbells">Liegestütze mit Hanteln</string>
+    <string name="workout_card_title_back_dumbells">Rückentraining</string>
+    <string name="workout_card_title_biceps_long_dumbell">Bizepstraining</string>
+
+        <!-- Laufen & Rennen -->
+    <string name="workout_card_title_joggen">Joggen</string>
+
+        <!--  Yoga  -->
+    <string name="workout_card_title_yoga">Yoga</string>
+
+    <!--  Workout Pill Texte  -->
+    <string name="workout_pill_cardio">Cardio</string>
+    <string name="workout_pill_strength">Kraft</string>
+    <string name="workout_pill_body">Körper</string>
+
+    <!--  Workout Button Text  -->
+    <string name="workout_button_text">Zum Workout</string>
+    <string name="workout_button_text_start">Workout starten</string>
+
+    <!--  Übersicht  -->
+    <string name="overview_today_planned">Workouts geplant</string>
+    <string name="overview_recent_workouts">Letzten Workouts</string>
+    <string name="overview_today_calories">Ernährungsübersicht</string>
+    <string name="overview_calories_today_taken">Gegessen</string>
+    <string name="overview_calories_today_limit">Tägliches gesetztes Limit</string>
+    <string name="overview_calories_remainder">Übrig</string>
+    <string name="overview_calories_burned">Verbrannt</string>
+    <string name="overview_calories_add">Ernährung hinzufügen</string>
+
+    <!--  Workout  -->
+    <string name="workout_today_planned">Heutige Workouts</string>
+    <string name="workout_today_empty">Keine Workouts geplant</string>
+    <string name="workout_add">Workout hinzufügen</string>
+    <string name="workout_history">Verlauf ansehen</string>
+    <string name="workout_progress_header">Abgeschlossen</string>
+    <string name="workout_progress_expanded_text">Mithilfe der Fortschrittsanzeige erkennen Sie
+        schnell wie viele geplante Workouts des jeweiligen Tages Sie bereits abgeschlossen
+        haben.</string>
+
+    <!--  Workout Add Card Header  -->
+    <string name="workout_add_strength_equipment">Gewichte</string>
+    <string name="workout_add_strength">Kraft</string>
+    <string name="workout_add_running">Laufen &amp; Rennen</string>
+    <string name="workout_add_cardio">Cardio &amp; HIIT</string>
+    <string name="workout_add_yoga">Yoga</string>
+
+</resources>

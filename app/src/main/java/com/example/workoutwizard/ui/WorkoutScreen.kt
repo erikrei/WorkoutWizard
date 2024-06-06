@@ -1,0 +1,224 @@
+package com.example.workoutwizard.ui
+
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CutCornerShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.workoutwizard.R
+import com.example.workoutwizard.data.WorkoutUiState
+import com.example.workoutwizard.helper.getColorWithAlpha
+import com.example.workoutwizard.helper.percentageTwoNumbers
+import com.example.workoutwizard.ui.components.ExpandedContentWorkoutProgress
+import com.example.workoutwizard.ui.components.HeaderWithContent
+import com.example.workoutwizard.ui.components.MainSpacer
+import com.example.workoutwizard.ui.components.NavigationHeader
+import com.example.workoutwizard.ui.components.TextIconButton
+import com.example.workoutwizard.ui.components.workout.WorkoutCardExpanded
+import com.example.workoutwizard.ui.model.WorkoutViewModel
+import com.example.workoutwizard.ui.theme.WorkoutWizardTheme
+import kotlin.math.floor
+
+@Composable
+fun WorkoutScreen(
+    modifier: Modifier = Modifier,
+    workoutViewModel: WorkoutViewModel = viewModel(),
+    addWorkoutNavigation: () -> Unit = {},
+    historyWorkoutNavigation: () -> Unit = {}
+) {
+    val uiState by workoutViewModel.uiState.collectAsState()
+
+    Scaffold(
+        floatingActionButton = {
+            TextIconButton(
+                text = R.string.workout_add,
+                icon = R.drawable.add_24,
+                shape = CutCornerShape(
+                    topStart = dimensionResource(id = R.dimen.default_cut_corner_radius),
+                    bottomEnd = dimensionResource(id = R.dimen.default_cut_corner_radius)
+                ),
+                onButtonClick = addWorkoutNavigation
+            )
+        }
+    ) {
+        innerPadding ->
+            Column(
+                modifier = modifier
+                    .padding(innerPadding)
+                    .verticalScroll(rememberScrollState())
+            ) {
+                NavigationHeader(
+                    headerText = R.string.main_workout_header,
+                    icon = R.drawable.history_48,
+                    onIconClick = historyWorkoutNavigation
+                )
+                MainSpacer()
+                WorkoutProgress(
+                    workoutUiState = uiState
+                )
+                MainSpacer()
+                WorkoutTodayPlanned(
+                    workoutViewModel = workoutViewModel,
+                    addWorkoutNavigation = addWorkoutNavigation,
+                    historyWorkoutNavigation = historyWorkoutNavigation,
+                    workoutUiState = uiState
+                )
+            }
+    }
+}
+
+@Composable
+fun WorkoutProgress(
+    modifier: Modifier = Modifier,
+    workoutUiState: WorkoutUiState
+) {
+    val percentage = percentageTwoNumbers(Pair(workoutUiState.todayFinished, workoutUiState.todayWorkouts.size))
+
+    val progressBackgroundColor = when(floor(percentage.second).toInt()) {
+        in 0..33 -> Color.Red
+        in 34..99 -> Color.Yellow
+        else -> Color.Green
+    }
+
+    val alphaBackgroundColor = getColorWithAlpha(progressBackgroundColor, .5f)
+    
+    HeaderWithContent(
+        headerText = R.string.workout_progress_header,
+        headerIcon = R.drawable.info_24,
+        expandedContent = { ExpandedContentWorkoutProgress() },
+        modifier = modifier
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(
+                    RoundedCornerShape(
+                        dimensionResource(id = R.dimen.default_box_border_radius)
+                    )
+                )
+        ) {
+            Text(
+                text = "${workoutUiState.todayFinished} von ${workoutUiState.todayWorkouts.size} (${percentage.first} %)",
+                modifier = Modifier
+                    .align(Alignment.Center),
+                fontWeight = FontWeight.Bold
+            )
+            LinearProgressIndicator(
+                progress = workoutUiState.todayFinished.toFloat() / workoutUiState.todayWorkouts.size,
+                color = progressBackgroundColor,
+                trackColor = alphaBackgroundColor,
+                modifier = Modifier
+                    .matchParentSize()
+                    .alpha(.5f)
+            )
+        }
+    }
+}
+
+@Composable
+fun WorkoutTodayEmptyButtons(
+    modifier: Modifier = Modifier,
+    addWorkoutNavigation: () -> Unit = {},
+    historyWorkoutNavigation: () -> Unit = {}
+) {
+    val buttonModifier = Modifier
+        .fillMaxWidth()
+
+    val buttonShape = CutCornerShape(
+        topStart = dimensionResource(id = R.dimen.default_cut_corner_radius),
+        bottomEnd = dimensionResource(id = R.dimen.default_cut_corner_radius)
+    )
+
+    Column(
+      modifier = modifier
+    ) {
+        TextIconButton(
+            text = R.string.workout_add,
+            icon = R.drawable.add_24,
+            shape = buttonShape,
+            fillWidth = true,
+            modifier = buttonModifier,
+            onButtonClick = addWorkoutNavigation
+        )
+        TextIconButton(
+            text = R.string.workout_history,
+            icon = R.drawable.history_24,
+            shape = buttonShape,
+            colors = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.primaryContainer,
+                contentColor = MaterialTheme.colorScheme.onPrimaryContainer
+            ),
+            fillWidth = true,
+            modifier = buttonModifier,
+            onButtonClick = historyWorkoutNavigation
+        )
+    }
+}
+
+@Composable
+fun WorkoutTodayPlanned(
+    modifier: Modifier = Modifier,
+    workoutViewModel: WorkoutViewModel = viewModel(),
+    workoutUiState: WorkoutUiState,
+    addWorkoutNavigation: () -> Unit = {},
+    historyWorkoutNavigation: () -> Unit = {}
+) {
+    if (workoutUiState.todayWorkouts.isEmpty()) {
+        HeaderWithContent(
+            headerText = R.string.workout_today_empty
+        ) {
+            WorkoutTodayEmptyButtons(
+                addWorkoutNavigation = addWorkoutNavigation,
+                historyWorkoutNavigation = historyWorkoutNavigation
+            )
+        }
+    } else {
+        HeaderWithContent(
+            headerText = R.string.workout_today_planned,
+            modifier = modifier
+        ) {
+            Column {
+                workoutUiState.todayWorkouts.forEachIndexed {
+                        index, workout ->
+                            val bottomPadding = if (index < workoutUiState.todayWorkouts.size - 1) dimensionResource(id = R.dimen.same_content_space) else
+                                dimensionResource(id = R.dimen.zero_dp)
+                            WorkoutCardExpanded(
+                                workout = workout,
+                                removeWorkout = { workoutViewModel.removePlannedWorkout(index) },
+                                modifier = Modifier
+                                    .padding(bottom = bottomPadding)
+                            )
+                }
+            }
+        }
+    }
+}
+
+@Preview(showBackground = true, uiMode = UI_MODE_NIGHT_YES)
+@Composable
+fun WorkoutScreenPreview() {
+    WorkoutWizardTheme {
+        WorkoutScreen()
+    }
+}
