@@ -35,3 +35,27 @@ fun ExpandedContentWorkoutProgress(
         )
     }
 }
+
+@Composable
+fun ExpandedContentWorkoutSections(
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier
+            .background(
+                color = MaterialTheme.colorScheme.primaryContainer,
+                shape = RoundedCornerShape(
+                    dimensionResource(id = R.dimen.default_box_border_radius)
+                )
+            )
+    ) {
+        Text(
+            text = stringResource(id = R.string.workout_add_categories_expanded_text),
+            color = MaterialTheme.colorScheme.onPrimaryContainer,
+            modifier = Modifier
+                .padding(
+                    dimensionResource(id = R.dimen.container_padding)
+                )
+        )
+    }
+}

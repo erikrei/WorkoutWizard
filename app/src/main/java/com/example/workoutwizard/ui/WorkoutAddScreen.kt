@@ -1,11 +1,12 @@
 package com.example.workoutwizard.ui
 
+import android.content.res.Configuration
 import androidx.annotation.StringRes
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -13,15 +14,14 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -29,8 +29,8 @@ import com.example.workoutwizard.R
 import com.example.workoutwizard.data.Datasource
 import com.example.workoutwizard.data.WorkoutData
 import com.example.workoutwizard.data.WorkoutSection
-import com.example.workoutwizard.data.WorkoutUiState
-import com.example.workoutwizard.ui.components.ImageFillSizeAlpha
+import com.example.workoutwizard.ui.components.ExpandedContentWorkoutSections
+import com.example.workoutwizard.ui.components.HeaderWithContent
 import com.example.workoutwizard.ui.components.MainSpacer
 import com.example.workoutwizard.ui.components.NavigationHeader
 import com.example.workoutwizard.ui.components.TextPill
@@ -70,25 +70,32 @@ fun WorkoutAddSections(
     sections: List<WorkoutSection>,
     navigateToSection: (WorkoutSection) -> Unit = {}
 ) {
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(2),
-        horizontalArrangement = Arrangement.spacedBy(
-            dimensionResource(id = R.dimen.grid_padding)
-        ),
-        verticalArrangement = Arrangement.spacedBy(
-            dimensionResource(id = R.dimen.grid_padding)
-        ),
-        modifier = modifier
+    HeaderWithContent(
+        headerText = R.string.workout_add_categories_header,
+        headerIcon = R.drawable.info_24,
+        headerIconDescription = R.string.workout_add_categories_header_icon_description,
+        expandedContent = { ExpandedContentWorkoutSections() }
     ) {
-        items(sections) {
-            section ->
-                WorkoutAddHeaderCard(
-                    section = section,
-                    modifier = Modifier
-                        .clickable {
-                            navigateToSection(section)
-                        }
-                )
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(2),
+            horizontalArrangement = Arrangement.spacedBy(
+                dimensionResource(id = R.dimen.grid_padding)
+            ),
+            verticalArrangement = Arrangement.spacedBy(
+                dimensionResource(id = R.dimen.grid_padding)
+            ),
+            modifier = modifier
+        ) {
+            items(sections) {
+                section ->
+                    WorkoutAddHeaderCard(
+                        section = section,
+                        modifier = Modifier
+                            .clickable {
+                                navigateToSection(section)
+                            }
+                    )
+            }
         }
     }
 }
@@ -102,46 +109,34 @@ fun WorkoutAddHeaderCard(
         modifier = modifier
             .fillMaxWidth()
             .height(100.dp)
-            .clip(
-                RoundedCornerShape(
+            .background(
+                color = MaterialTheme.colorScheme.primaryContainer,
+                shape = RoundedCornerShape(
                     dimensionResource(id = R.dimen.default_border_radius)
                 )
             )
     ) {
-        ImageFillSizeAlpha(
-            image = section.sectionBackgroundImage,
-            alpha = .3f,
-            modifier = Modifier
-                .matchParentSize()
-        )
         Text(
             text = stringResource(id = section.sectionName),
+            color = MaterialTheme.colorScheme.onPrimaryContainer,
+            style = MaterialTheme.typography.titleLarge,
             modifier = Modifier
                 .padding(
                     dimensionResource(id = R.dimen.card_default_padding)
                 )
         )
-
-        Row(
+        TextPill(
+            text = section.workoutsList.size.toString(),
+            backgroundColor = MaterialTheme.colorScheme.onPrimaryContainer,
+            textColor = MaterialTheme.colorScheme.onPrimary,
+            textStyle = MaterialTheme.typography.bodyLarge,
+            fontWeight = FontWeight.Bold,
             modifier = Modifier
-                .align(Alignment.BottomEnd)
                 .padding(
-                    dimensionResource(id = R.dimen.card_default_padding)
-                ),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            val workoutsSize = section.workoutsList.size
-            TextPill(
-                text = workoutsSize.toString(),
-                modifier = Modifier
-                    .padding(
-                        end = dimensionResource(id = R.dimen.same_content_space)
-                    )
-            )
-            Text(
-                text = if (workoutsSize > 1) "Workouts" else "Workout",
-            )
-        }
+                    dimensionResource(id = R.dimen.same_content_space)
+                )
+                .align(Alignment.BottomEnd)
+        )
 
     }
 }
@@ -206,7 +201,7 @@ fun WorkoutSectionWorkoutsList(
     }
 }
 
-@Preview(showSystemUi = true)
+@Preview(showSystemUi = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun WorkoutAddScreenPreview() {
     WorkoutWizardTheme {

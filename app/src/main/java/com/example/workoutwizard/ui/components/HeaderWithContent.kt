@@ -3,8 +3,10 @@ package com.example.workoutwizard.ui.components
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -40,16 +42,19 @@ fun HeaderWithContent(
 ) {
     val bottomPadding = if (headerIcon != null) R.dimen.zero_dp else R.dimen.same_content_space
 
-    var expandedHeaderIcon by remember { mutableStateOf(true) }
+    var expandedHeaderIcon by remember { mutableStateOf(false) }
 
     Column(
         modifier = modifier
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(
-                bottom = dimensionResource(id = bottomPadding)
-            )
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(
+                    bottom = dimensionResource(id = bottomPadding)
+                )
         ) {
             Text(
                 text = stringResource(id = headerText),
