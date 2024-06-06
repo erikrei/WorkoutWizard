@@ -139,7 +139,7 @@ fun WorkoutWizardApp(
                     WorkoutScreen(
                         workoutViewModel = workoutViewModel,
                         addWorkoutNavigation = { navController.navigate(SubNavigationType.SUB_WORKOUT_ADD.name) },
-                        historyWorkoutNavigation = { navController.navigate(SubNavigationType.SUB_WORKOUT_HISTORY.name) }
+                        planWorkoutNavigation = { navController.navigate(SubNavigationType.SUB_WORKOUT_HISTORY.name) }
                     )
                 }
                 composable(

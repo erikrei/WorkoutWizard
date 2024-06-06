@@ -31,7 +31,7 @@
 
     <!--  Sub Navigation Title  -->
     <string name="sub_workout_add">Workout hinzufügen</string>
-    <string name="sub_workout_history">Verlauf</string>
+    <string name="sub_workout_plan">Plan</string>
 
     <!--  Titel aller Workouts  -->
         <!-- Krafttraining -->
@@ -69,10 +69,15 @@
     <string name="overview_calories_add">Ernährung hinzufügen</string>
 
     <!--  Workout  -->
+        <!--  Header Content Descriptions  -->
+        <string name="workout_header_plan_description">Navigation zum Plan der bereits ausgeführten
+            und geplanten Workouts</string>
+        <string name="workout_header_add_description">Navigation zum Hinzufügen eines
+            Workouts</string>
     <string name="workout_today_planned">Heutige Workouts</string>
     <string name="workout_today_empty">Keine Workouts geplant</string>
     <string name="workout_add">Workout hinzufügen</string>
-    <string name="workout_history">Verlauf ansehen</string>
+    <string name="workout_plan">Plan ansehen</string>
     <string name="workout_progress_header">Abgeschlossen</string>
     <string name="workout_progress_expanded_text">Mithilfe der Fortschrittsanzeige erkennen Sie
         schnell wie viele geplante Workouts des jeweiligen Tages Sie bereits abgeschlossen
