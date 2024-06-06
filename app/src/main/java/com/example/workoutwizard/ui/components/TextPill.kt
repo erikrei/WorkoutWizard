@@ -11,6 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -23,6 +24,7 @@ fun TextPill(
     backgroundColor: Color = MaterialTheme.colorScheme.primaryContainer,
     textColor: Color = MaterialTheme.colorScheme.onPrimaryContainer,
     textStyle: TextStyle = MaterialTheme.typography.labelLarge,
+    fontWeight: FontWeight = FontWeight.Normal,
     pillRadius: Dp = 12.dp
 ) {
     Box(
@@ -36,6 +38,7 @@ fun TextPill(
             text = text,
             style = textStyle,
             color = textColor,
+            fontWeight = fontWeight,
             modifier = Modifier
                 .align(Alignment.Center)
                 .padding(

@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Workout Wizard</string>
     <string name="icon_text">WW</string>
 
@@ -83,11 +83,20 @@
         schnell wie viele geplante Workouts des jeweiligen Tages Sie bereits abgeschlossen
         haben.</string>
 
-    <!--  Workout Add Card Header  -->
-    <string name="workout_add_strength_equipment">Gewichte</string>
-    <string name="workout_add_strength">Kraft</string>
-    <string name="workout_add_running">Laufen &amp; Rennen</string>
-    <string name="workout_add_cardio">Cardio &amp; HIIT</string>
-    <string name="workout_add_yoga">Yoga</string>
+    <!--  Workout Add  -->
+        <!-- Categories Header -->
+        <string name="workout_add_categories_header">Kategorien</string>
+        <string name="workout_add_categories_header_icon_description">Informationen zu den
+            Kategorien anzeigen</string>
+        <string name="workout_add_categories_expanded_text">Hier können Sie zwischen verschiedenen
+            Kategorien wählen, die passende Workouts enthalten. Die Anzahl in der Ecke sagt die
+            Anzahl der Workouts aus, die in der Kategorie vorhanden sind.</string>
+
+        <!--  Section Header  -->
+        <string name="workout_add_strength_equipment">Gewichte</string>
+        <string name="workout_add_strength">Kraft</string>
+        <string name="workout_add_running">Laufen &amp; Rennen</string>
+        <string name="workout_add_cardio">Cardio &amp; HIIT</string>
+        <string name="workout_add_yoga">Yoga</string>
 
 </resources>
