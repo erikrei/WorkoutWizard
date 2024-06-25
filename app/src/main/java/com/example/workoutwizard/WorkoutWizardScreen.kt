@@ -22,8 +22,11 @@ import com.example.workoutwizard.data.InitialUserDataStage
 import com.example.workoutwizard.data.MainNavigationType
 import com.example.workoutwizard.data.SubNavigationType
 import com.example.workoutwizard.ui.AuthLayout
+import com.example.workoutwizard.ui.CaloriesAdd
+import com.example.workoutwizard.ui.CaloriesScreen
 import com.example.workoutwizard.ui.InitialUserDataLayout
 import com.example.workoutwizard.ui.OverviewScreen
+import com.example.workoutwizard.ui.WorkoutAdd
 import com.example.workoutwizard.ui.WorkoutAddScreen
 import com.example.workoutwizard.ui.WorkoutHistoryScreen
 import com.example.workoutwizard.ui.WorkoutScreen
@@ -33,10 +36,12 @@ import com.example.workoutwizard.ui.model.AuthViewModel
 import com.example.workoutwizard.ui.model.CaloriesViewModel
 import com.example.workoutwizard.ui.model.InitialUserDataViewModel
 import com.example.workoutwizard.ui.model.WorkoutViewModel
+import com.google.firebase.auth.FirebaseAuth
 
 @Composable
 fun WorkoutWizardApp(
     modifier: Modifier = Modifier,
+    auth: FirebaseAuth,
     authViewModel: AuthViewModel = viewModel(),
     initialUserDataViewModel: InitialUserDataViewModel = viewModel(),
     workoutViewModel: WorkoutViewModel = viewModel(),
@@ -53,8 +58,12 @@ fun WorkoutWizardApp(
         navController.navigate(it.name)
         authViewModel.changeAuthType()
     }
-
-    val containerPadding = dimensionResource(id = R.dimen.container_padding)
+    
+    val containerPadding = when (backstackEntry?.destination?.route) {
+        AuthType.LOGIN.name -> dimensionResource(id = R.dimen.zero_dp)
+        AuthType.REGISTER.name -> dimensionResource(id = R.dimen.zero_dp)
+        else -> dimensionResource(id = R.dimen.container_padding)
+    }
 
     Scaffold(
         bottomBar = {
@@ -80,8 +89,42 @@ fun WorkoutWizardApp(
                     ),
                 navController = navController,
 //                startDestination = AuthType.LOGIN.name,
-                startDestination = MainNavigationType.MAIN_OVERVIEW.name
+//                startDestination = MainNavigationType.MAIN_OVERVIEW.name,
+                startDestination = SubNavigationType.SUB_WORKOUT_ADD.name
+//                startDestination = MainNavigationType.MAIN_CALORIES.name
             ) {
+
+                val authButtonClick: () -> Unit = {
+//                    if (authViewModel.uiState.value.authType === AuthType.LOGIN) {
+//                        auth.signInWithEmailAndPassword(
+//                            authViewModel.uiState.value.username,
+//                            authViewModel.uiState.value.password
+//                        ).addOnCompleteListener {
+//                                task ->
+//                            if (task.isSuccessful) {
+//                                Log.i("LoginAuthLayout", "Login erfolgreich")
+//                                val user = auth.currentUser
+//                            } else {
+//                                Log.i("LoginAuthLayout", "Login fehlgeschlagen")
+//                            }
+//                        }
+////                        navController.navigate(InitialUserDataStage.USER_DATA_INPUT.name)
+//                    } else {
+//                        auth.createUserWithEmailAndPassword(
+//                            authViewModel.uiState.value.username,
+//                            authViewModel.uiState.value.password
+//                        ).addOnCompleteListener {
+//                                task ->
+//                            if (task.isSuccessful) {
+//                                Log.i("RegisterAuthLayout", "Benutzer ${authViewModel.uiState.value.username} erstellt")
+//                            } else {
+//                                Log.i("RegisterAuthLayout", "Registrierung fehlgeschlagen")
+//                            }
+//                        }
+////                        navController.navigate(InitialUserDataStage.USER_DATA_INPUT.name)
+//                    }
+                    navController.navigate(MainNavigationType.MAIN_OVERVIEW.name)
+                }
 
                 // Authentifizierung
                 composable(
@@ -90,15 +133,17 @@ fun WorkoutWizardApp(
                     AuthLayout(
                         authViewModel = authViewModel,
                         onChangeAuthTypeClick = { onChangeAuthTypeClick(AuthType.REGISTER) },
-                        onSuccessLoginClick = { navController.navigate(InitialUserDataStage.USER_DATA_INPUT.name) },
+                        onAuthButtonClick = authButtonClick
                     )
                 }
+
                 composable(
                     route = AuthType.REGISTER.name
                 ) {
                     AuthLayout(
                         authViewModel = authViewModel,
                         onChangeAuthTypeClick = { onChangeAuthTypeClick(AuthType.LOGIN) },
+                        onAuthButtonClick = authButtonClick
                     )
                 }
 
@@ -130,7 +175,8 @@ fun WorkoutWizardApp(
                     OverviewScreen(
                         workoutViewModel = workoutViewModel,
                         caloriesViewModel = caloriesViewModel,
-                        addWorkoutNavigation = { navController.navigate(SubNavigationType.SUB_WORKOUT_ADD.name) }
+                        addWorkoutNavigation = { navController.navigate(SubNavigationType.SUB_WORKOUT_ADD.name) },
+                        addCaloriesNavigation = { navController.navigate(SubNavigationType.SUB_CALORIES_ADD.name) }
                     )
                 }
                 composable(
@@ -170,10 +216,6 @@ fun WorkoutWizardApp(
                     WorkoutHistoryScreen()
                 }
 
-
-
-
-
                 composable(
                     route = "workout/add/section/{sectionName}",
                     arguments = listOf(
@@ -185,9 +227,45 @@ fun WorkoutWizardApp(
                     val sectionName = backstackEntry?.arguments?.getInt("sectionName") ?: -1
                     WorkoutSection(
                         sectionName = sectionName,
-                        workoutViewModel = workoutViewModel,
-                        navigateToWorkoutScreen = { navController.navigate(MainNavigationType.MAIN_WORKOUT.name) }
+                        onWorkoutClick = {
+                            navController.navigate("workout/add/${it.name}")
+                        }
                     )
+                }
+
+                composable(
+                    route = "workout/add/{workoutToAdd}",
+                    arguments = listOf(
+                        navArgument("workoutToAdd") {
+                            type = NavType.StringType
+                        }
+                    )
+                ) {
+                    val workoutString = backstackEntry?.arguments?.getString("workoutToAdd") ?: ""
+                    WorkoutAdd(
+                        workoutString = workoutString,
+                        workoutViewModel = workoutViewModel,
+                        onAddClick = {
+                            navController.navigate(MainNavigationType.MAIN_WORKOUT.name)
+                        }
+                    )
+                }
+
+                composable(
+                    route = MainNavigationType.MAIN_CALORIES.name
+                ) {
+                    CaloriesScreen(
+                        caloriesViewModel = caloriesViewModel,
+                        addCaloriesNavigation = {
+                            navController.navigate(SubNavigationType.SUB_CALORIES_ADD.name)
+                        }
+                    )
+                }
+
+                composable(
+                    route = SubNavigationType.SUB_CALORIES_ADD.name
+                ) {
+                    CaloriesAdd()
                 }
             }
     }

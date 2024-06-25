@@ -35,7 +35,10 @@ import com.example.workoutwizard.ui.theme.WorkoutWizardTheme
 fun CaloriesCard(
     modifier: Modifier = Modifier,
     todayCaloriesTaken: Int,
-    todayCaloriesLimit: Int
+    todayCaloriesLimit: Int,
+    todayCaloriesBurned: Int,
+    withoutAddButton: Boolean = false,
+    addButtonNavigation: () -> Unit = {}
 ) {
     Box(
         modifier = modifier
@@ -49,7 +52,7 @@ fun CaloriesCard(
             )
     ) {
         val percentageTaken = percentageTwoNumbers(
-            Pair(todayCaloriesTaken, todayCaloriesLimit)
+            Pair(todayCaloriesTaken - todayCaloriesBurned, todayCaloriesLimit + todayCaloriesBurned)
         )
         Column(
             modifier = Modifier
@@ -66,7 +69,7 @@ fun CaloriesCard(
             ) {
                 CaloriesCardSideText(
                     sideTextHeader = R.string.overview_calories_remainder,
-                    sideText = todayCaloriesLimit - todayCaloriesTaken
+                    sideText = todayCaloriesLimit - todayCaloriesTaken + todayCaloriesBurned
                 )
                 CaloriesCardPercentage(
                     percentage = percentageTaken,
@@ -74,50 +77,54 @@ fun CaloriesCard(
                 )
                 CaloriesCardSideText(
                     sideTextHeader = R.string.overview_calories_burned,
-                    sideText = 0
+                    sideText = todayCaloriesBurned
                 )
             }
 
-            MainSpacer(
-                spaceSize = R.dimen.same_content_space
-            )
+            if (!withoutAddButton) {
+                MainSpacer(
+                    spaceSize = R.dimen.same_content_space
+                )
 
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        start = dimensionResource(id = R.dimen.container_padding)
-                    )
-                    .clickable { },
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Box(
+                Row(
                     modifier = Modifier
-                        .border(
-                            width = dimensionResource(id = R.dimen.default_border_width),
-                            color = MaterialTheme.colorScheme.onPrimaryContainer,
-                            shape = RoundedCornerShape(
-                                dimensionResource(id = R.dimen.default_box_border_radius)
-                            )
+                        .fillMaxWidth()
+                        .padding(
+                            start = dimensionResource(id = R.dimen.container_padding)
                         )
+                        .clickable {
+                            addButtonNavigation()
+                        },
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.add_24),
-                        contentDescription = null,
+                    Box(
                         modifier = Modifier
-                            .padding(2.dp),
-                        tint = MaterialTheme.colorScheme.onPrimaryContainer
+                            .border(
+                                width = dimensionResource(id = R.dimen.default_border_width),
+                                color = MaterialTheme.colorScheme.onPrimaryContainer,
+                                shape = RoundedCornerShape(
+                                    dimensionResource(id = R.dimen.default_box_border_radius)
+                                )
+                            )
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.add_24),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .padding(2.dp),
+                            tint = MaterialTheme.colorScheme.onPrimaryContainer
+                        )
+                    }
+                    Text(
+                        text = stringResource(id = R.string.overview_calories_add),
+                        style = MaterialTheme.typography.titleMedium,
+                        color = MaterialTheme.colorScheme.onPrimaryContainer,
+                        modifier = Modifier
+                            .padding(
+                                start = dimensionResource(id = R.dimen.same_content_space)
+                            )
                     )
                 }
-                Text(
-                    text = stringResource(id = R.string.overview_calories_add),
-                    style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.onPrimaryContainer,
-                    modifier = Modifier
-                        .padding(
-                            start = dimensionResource(id = R.dimen.same_content_space)
-                        )
-                )
             }
         }
     }
@@ -179,7 +186,8 @@ fun CaloriesCardPreview() {
     WorkoutWizardTheme {
         CaloriesCard(
             todayCaloriesTaken = 1900,
-            todayCaloriesLimit = 2200
+            todayCaloriesLimit = 2200,
+            todayCaloriesBurned = 0
         )
     }
 }

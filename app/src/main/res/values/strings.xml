@@ -77,6 +77,10 @@
     <string name="workout_today_planned">Heutige Workouts</string>
     <string name="workout_today_empty">Keine Workouts geplant</string>
     <string name="workout_add">Workout hinzufügen</string>
+    <string name="workout_add_date">Geplantes Datum</string>
+    <string name="workout_add_date_select">Datum auswählen</string>
+    <string name="workout_add_date_select_accept">Datum bestätigen</string>
+    <string name="workout_add_date_behind">Datum kann nicht in der Vergangenheit liegen.</string>
     <string name="workout_plan">Plan ansehen</string>
     <string name="workout_progress_header">Abgeschlossen</string>
     <string name="workout_progress_expanded_text">Mithilfe der Fortschrittsanzeige erkennen Sie
@@ -99,4 +103,11 @@
         <string name="workout_add_cardio">Cardio &amp; HIIT</string>
         <string name="workout_add_yoga">Yoga</string>
 
+    <!--  Kalorien  -->
+        <!--  Header Content Descriptions  -->
+        <string name="calories_header_add_description">Navigation zum Hinzufügen einer Mahlzeit</string>
+
+    <!--  Kalorien Add  -->
+    <string name="calories_add">Kalorien hinzufügen</string>
+    <string name="calories_add_name">Name</string>
 </resources>

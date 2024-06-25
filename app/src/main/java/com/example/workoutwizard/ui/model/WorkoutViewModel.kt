@@ -45,6 +45,15 @@ class WorkoutViewModel: ViewModel() {
         }
     }
 
+    fun addPlannedWorkout(workoutData: WorkoutData) {
+        _uiState.update {
+            currentState ->
+                currentState.copy(
+                    todayWorkouts = uiState.value.todayWorkouts.plus(workoutData)
+                )
+        }
+    }
+
     fun removePlannedWorkout(workoutIndex: Int) {
         _uiState.update {
             currentState ->

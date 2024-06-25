@@ -42,7 +42,8 @@ fun OverviewScreen(
     modifier: Modifier = Modifier,
     workoutViewModel: WorkoutViewModel = viewModel(),
     caloriesViewModel: CaloriesViewModel = viewModel(),
-    addWorkoutNavigation: () -> Unit = {}
+    addWorkoutNavigation: () -> Unit = {},
+    addCaloriesNavigation: () -> Unit = {}
 ) {
     val uiState by workoutViewModel.uiState.collectAsState()
 
@@ -62,7 +63,8 @@ fun OverviewScreen(
 //        )
 //        MainSpacer()
         OverviewCalories(
-            caloriesViewModel = caloriesViewModel
+            caloriesViewModel = caloriesViewModel,
+            addCaloriesNavigation = addCaloriesNavigation
         )
     }
 }
@@ -187,7 +189,8 @@ fun OverviewTodayWorkoutEmpty(
 @Composable
 fun OverviewCalories(
     modifier: Modifier = Modifier,
-    caloriesViewModel: CaloriesViewModel = viewModel()
+    caloriesViewModel: CaloriesViewModel = viewModel(),
+    addCaloriesNavigation: () -> Unit = {}
 ) {
     val uiState by caloriesViewModel.uiState.collectAsState()
 
@@ -199,7 +202,9 @@ fun OverviewCalories(
             modifier = Modifier
                 .fillMaxWidth(),
             todayCaloriesTaken = uiState.todayCaloriesTaken,
-            todayCaloriesLimit = uiState.todayCaloriesLimit
+            todayCaloriesLimit = uiState.todayCaloriesLimit,
+            todayCaloriesBurned = uiState.todayCaloriesBurned,
+            addButtonNavigation = addCaloriesNavigation
         )
     }
 }

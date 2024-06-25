@@ -9,7 +9,8 @@ enum class WorkoutData(
     @StringRes val title: Int,
     @DrawableRes val img: Int,
     @StringRes val pillText: Int,
-    var createdAt: LocalDate = LocalDate.now()
+    var createdAt: LocalDate = LocalDate.now(),
+    val caloriesBurned: Int = 80
 ) {
     JOGGEN(
         title = R.string.workout_card_title_joggen,
@@ -19,7 +20,7 @@ enum class WorkoutData(
     PUSHUP(
         title = R.string.workout_card_title_pushups,
         img = R.drawable.pushup,
-        pillText = R.string.workout_pill_body
+        pillText = R.string.workout_pill_body,
     ),
     BACK_DUMBELLS(
         title = R.string.workout_card_title_back_dumbells,

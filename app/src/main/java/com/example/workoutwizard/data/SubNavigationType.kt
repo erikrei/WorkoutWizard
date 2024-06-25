@@ -11,5 +11,8 @@ enum class SubNavigationType(
     ),
     SUB_WORKOUT_HISTORY(
         navigationHeader = R.string.sub_workout_plan
+    ),
+    SUB_CALORIES_ADD(
+        navigationHeader = R.string.calories_add
     )
 }

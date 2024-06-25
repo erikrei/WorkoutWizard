@@ -32,13 +32,14 @@ import com.example.workoutwizard.ui.components.InputField
 import com.example.workoutwizard.ui.components.InputFieldPassword
 import com.example.workoutwizard.ui.model.AuthViewModel
 import com.example.workoutwizard.ui.theme.WorkoutWizardTheme
+import com.google.firebase.auth.FirebaseAuth
 
 @Composable
 fun AuthLayout(
     modifier: Modifier = Modifier,
     onChangeAuthTypeClick: () -> Unit = {},
-    onSuccessLoginClick: () -> Unit = {},
-    authViewModel: AuthViewModel = viewModel(),
+    onAuthButtonClick: () -> Unit = {},
+    authViewModel: AuthViewModel = viewModel()
 ) {
     val authUiState by authViewModel.uiState.collectAsState()
 
@@ -74,7 +75,7 @@ fun AuthLayout(
             authButtonText = authUiState.authType.title,
             usernameValueChange = { authViewModel.onChangeUsername(it) },
             passwordValueChange = { authViewModel.onChangePassword(it) },
-            onSuccessLoginClick = onSuccessLoginClick
+            onAuthButtonClick = onAuthButtonClick
         )
         AuthChange(
             authType = authUiState.authType,
@@ -92,7 +93,7 @@ fun AuthUserInput(
     usernameValueChange: (String) -> Unit,
     passwordValueChange: (String) -> Unit,
     authButtonText: String,
-    onSuccessLoginClick: () -> Unit,
+    onAuthButtonClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val inputFieldModifier = Modifier
@@ -121,7 +122,7 @@ fun AuthUserInput(
             modifier = inputFieldModifier
         )
         Button(
-            onClick = onSuccessLoginClick,
+            onClick = onAuthButtonClick,
             modifier = inputFieldModifier,
             shape = CutCornerShape(
                 topStart = dimensionResource(id = R.dimen.auth_button_cut),
@@ -176,10 +177,10 @@ fun AuthChange(
     }
 }
 
-@Preview(showBackground = true, showSystemUi = true)
-@Composable
-fun AuthLayoutPreview() {
-    WorkoutWizardTheme {
-        AuthLayout()
-    }
-}
+//@Preview(showBackground = true, showSystemUi = true)
+//@Composable
+//fun AuthLayoutPreview() {
+//    WorkoutWizardTheme {
+//        AuthLayout()
+//    }
+//}
