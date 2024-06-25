@@ -3,8 +3,12 @@ package com.example.workoutwizard
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -65,7 +69,13 @@ fun WorkoutWizardApp(
         else -> dimensionResource(id = R.dimen.container_padding)
     }
 
+    val scope = rememberCoroutineScope()
+    val snackbarHostState = remember { SnackbarHostState() }
+
     Scaffold(
+        snackbarHost = {
+            SnackbarHost(hostState = snackbarHostState)
+        },
         bottomBar = {
             val currentRoute = backstackEntry?.destination?.route ?: ""
             if (!forbiddenDestination.contains(currentRoute))
@@ -247,7 +257,11 @@ fun WorkoutWizardApp(
                         workoutViewModel = workoutViewModel,
                         onAddClick = {
                             navController.navigate(MainNavigationType.MAIN_WORKOUT.name)
-                        }
+                        },
+                        snackbarHostState = snackbarHostState,
+                        scope = scope,
+                        modifier = Modifier
+                            .padding(innerPadding)
                     )
                 }
 

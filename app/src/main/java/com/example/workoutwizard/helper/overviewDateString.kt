@@ -64,5 +64,5 @@ fun overviewDateStringMilliseconds(
 
     val year = calendar.get(Calendar.YEAR)
 
-    return "$weekday. $month. $year"
+    return "$weekday. $month $year"
 }
