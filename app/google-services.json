@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1083390751473",
+    "project_id": "workoutwizard-a5792",
+    "storage_bucket": "workoutwizard-a5792.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1083390751473:android:1e3c07bdca7e5ad0fe2f50",
+        "android_client_info": {
+          "package_name": "com.example.workoutwizard"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDyMqjN394Thow41lfG6bZm4UqL_Gt4bFY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

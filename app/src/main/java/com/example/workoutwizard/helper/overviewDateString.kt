@@ -1,6 +1,7 @@
 package com.example.workoutwizard.helper
 
 import java.time.LocalDate
+import java.util.Calendar
 
 fun overviewDateString(
     date: LocalDate = LocalDate.now()
@@ -35,4 +36,33 @@ fun overviewDateString(
     }
 
     return "$weekday, $day. $month"
+}
+
+fun overviewDateStringMilliseconds(
+    milliseconds: Long
+): String {
+    val calendar = Calendar.getInstance()
+    calendar.timeInMillis = milliseconds
+
+    val weekday = calendar.get(Calendar.DATE)
+
+    val month = when (calendar.get(Calendar.MONTH)) {
+        0 -> "Januar"
+        1 -> "Februar"
+        2 -> "März"
+        3 -> "April"
+        4 -> "Mai"
+        5 -> "Juni"
+        6 -> "Juli"
+        7 -> "August"
+        8 -> "September"
+        9 -> "Oktober"
+        10 -> "November"
+        11 -> "Dezember"
+        else -> ""
+    }
+
+    val year = calendar.get(Calendar.YEAR)
+
+    return "$weekday. $month. $year"
 }

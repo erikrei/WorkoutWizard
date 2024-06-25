@@ -1,6 +1,7 @@
 package com.example.workoutwizard.data
 
 data class CaloriesUiState(
-    val todayCaloriesLimit: Int = 0,
-    val todayCaloriesTaken: Int = 0
+    var todayCaloriesLimit: Int = 0,
+    var todayCaloriesTaken: Int = 0,
+    var todayCaloriesBurned: Int = 0
 )
