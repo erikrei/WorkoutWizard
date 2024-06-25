@@ -23,6 +23,7 @@ import androidx.compose.material3.DatePickerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberDatePickerState
@@ -40,7 +41,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.workoutwizard.R
 import com.example.workoutwizard.data.Datasource
 import com.example.workoutwizard.data.WorkoutData
@@ -54,7 +54,9 @@ import com.example.workoutwizard.ui.components.TextPill
 import com.example.workoutwizard.ui.components.workout.WorkoutCardSmall
 import com.example.workoutwizard.ui.model.WorkoutViewModel
 import com.example.workoutwizard.ui.theme.WorkoutWizardTheme
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import java.util.Calendar
 
 @Composable
 fun WorkoutAddScreen(
@@ -220,14 +222,22 @@ fun WorkoutAdd(
     modifier: Modifier = Modifier,
     workoutString: String,
     workoutViewModel: WorkoutViewModel,
-    onAddClick: () -> Unit = {}
+    onAddClick: () -> Unit = {},
+    scope: CoroutineScope,
+    snackbarHostState: SnackbarHostState
 ) {
     val workout = WorkoutData.entries.find {
         it.name == workoutString
     }
 
     if (workout != null) {
-        val date = rememberDatePickerState()
+        val workoutTitle = stringResource(id = workout.title)
+        val date = rememberDatePickerState(
+            yearRange = IntRange(
+                Calendar.getInstance().get(Calendar.YEAR),
+                Calendar.getInstance().get(Calendar.YEAR) + 10,
+            )
+        )
         val buttonText =
             if (date.selectedDateMillis != null) {
                 overviewDateStringMilliseconds(
@@ -235,7 +245,9 @@ fun WorkoutAdd(
                 )
             }
             else stringResource(id = R.string.workout_add_date_select)
+
         var showDatePicker by remember { mutableStateOf(false) }
+
         Column(
             modifier = modifier
         ) {
@@ -275,6 +287,11 @@ fun WorkoutAdd(
             Button(
                 onClick = {
                     workoutViewModel.addPlannedWorkout(workout)
+                    scope.launch {
+                        snackbarHostState.showSnackbar(
+                            message = "$workoutTitle erfolgreich hinzugefügt",
+                        )
+                    }
                     onAddClick()
                 },
                 enabled = date.selectedDateMillis != null,
@@ -320,7 +337,9 @@ fun WorkoutAddModalBottom(
             dateValidator = {
                 it >= System.currentTimeMillis()
             },
-            showModeToggle = false
+            showModeToggle = false,
+            title = null,
+            headline = null
         )
         Button(
             onClick = {
@@ -342,14 +361,6 @@ fun WorkoutAddModalBottom(
                 text = stringResource(id = R.string.workout_add_date_select_accept)
             )
         }
-    }
-}
-
-@Preview(showSystemUi = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
-@Composable
-fun WorkoutAddPreview() {
-    WorkoutWizardTheme {
-        WorkoutAdd(workoutString = WorkoutData.SITUP.name, workoutViewModel = viewModel())
     }
 }
 
