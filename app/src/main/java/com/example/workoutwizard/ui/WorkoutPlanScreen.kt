@@ -9,7 +9,7 @@ import com.example.workoutwizard.ui.components.NavigationHeader
 import com.example.workoutwizard.ui.theme.WorkoutWizardTheme
 
 @Composable
-fun WorkoutHistoryScreen(
+fun WorkoutPlanScreen(
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -23,8 +23,8 @@ fun WorkoutHistoryScreen(
 
 @Preview
 @Composable
-fun WorkoutHistoryScreenPreview() {
+fun WorkoutPlanScreenPreview() {
     WorkoutWizardTheme {
-        WorkoutHistoryScreen()
+        WorkoutPlanScreen()
     }
 }

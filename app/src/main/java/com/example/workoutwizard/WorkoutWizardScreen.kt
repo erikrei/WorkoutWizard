@@ -32,7 +32,7 @@ import com.example.workoutwizard.ui.InitialUserDataLayout
 import com.example.workoutwizard.ui.OverviewScreen
 import com.example.workoutwizard.ui.WorkoutAdd
 import com.example.workoutwizard.ui.WorkoutAddScreen
-import com.example.workoutwizard.ui.WorkoutHistoryScreen
+import com.example.workoutwizard.ui.WorkoutPlanScreen
 import com.example.workoutwizard.ui.WorkoutScreen
 import com.example.workoutwizard.ui.WorkoutSection
 import com.example.workoutwizard.ui.components.BottomBar
@@ -195,7 +195,7 @@ fun WorkoutWizardApp(
                     WorkoutScreen(
                         workoutViewModel = workoutViewModel,
                         addWorkoutNavigation = { navController.navigate(SubNavigationType.SUB_WORKOUT_ADD.name) },
-                        planWorkoutNavigation = { navController.navigate(SubNavigationType.SUB_WORKOUT_HISTORY.name) }
+                        planWorkoutNavigation = { navController.navigate(SubNavigationType.SUB_WORKOUT_PLAN.name) }
                     )
                 }
                 composable(
@@ -221,9 +221,9 @@ fun WorkoutWizardApp(
                 }
 
                 composable(
-                    route = SubNavigationType.SUB_WORKOUT_HISTORY.name
+                    route = SubNavigationType.SUB_WORKOUT_PLAN.name
                 ) {
-                    WorkoutHistoryScreen()
+                    WorkoutPlanScreen()
                 }
 
                 composable(

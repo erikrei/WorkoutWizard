@@ -93,7 +93,7 @@ fun WorkoutHeaderSideContent(
             onClick = onPlanClick
         ) {
             Icon(
-                painter = painterResource(id = R.drawable.history_48),
+                painter = painterResource(id = R.drawable.plan_48),
                 contentDescription = stringResource(id = R.string.workout_header_plan_description)
             )
         }
@@ -183,7 +183,7 @@ fun WorkoutTodayEmptyButtons(
         )
         TextIconButton(
             text = R.string.workout_plan,
-            icon = R.drawable.history_24,
+            icon = R.drawable.plan_24,
             shape = buttonShape,
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.primaryContainer,
