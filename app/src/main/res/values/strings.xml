@@ -70,8 +70,7 @@
 
     <!--  Workout  -->
         <!--  Header Content Descriptions  -->
-        <string name="workout_header_plan_description">Navigation zum Plan der bereits ausgeführten
-            und geplanten Workouts</string>
+        <string name="workout_header_plan_description">Navigation zum Plan der geplanten Workouts</string>
         <string name="workout_header_add_description">Navigation zum Hinzufügen eines
             Workouts</string>
     <string name="workout_today_planned">Heutige Workouts</string>
