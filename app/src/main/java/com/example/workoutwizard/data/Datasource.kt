@@ -50,15 +50,4 @@ object Datasource {
             )
         )
     )
-
-    val workoutsToday = mutableListOf(
-        WorkoutData.JOGGEN,
-        WorkoutData.SITUP,
-        WorkoutData.PUSHUP_DUMBELLS
-    )
-
-    val workoutsRecent = listOf(
-        WorkoutData.SITUP,
-        WorkoutData.PUSHUP_DUMBELLS,
-    )
 }

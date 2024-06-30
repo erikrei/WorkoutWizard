@@ -54,7 +54,7 @@ fun OverviewScreen(
         OverviewHeader()
         MainSpacer()
         OverviewTodayPlanned(
-            plannedWorkouts = uiState.todayWorkouts,
+            plannedWorkouts = uiState.workouts,
             addWorkoutNavigation = addWorkoutNavigation
         )
         MainSpacer()
