@@ -85,6 +85,8 @@
     <string name="workout_progress_expanded_text">Mithilfe der Fortschrittsanzeige erkennen Sie
         schnell wie viele geplante Workouts des jeweiligen Tages Sie bereits abgeschlossen
         haben.</string>
+    <string name="workout_completed">Abgeschlossen</string>
+    <string name="workout_uncompleted">Offen</string>
 
     <!--  Workout Add  -->
         <!-- Categories Header -->
@@ -101,7 +103,10 @@
         <string name="workout_add_running">Laufen &amp; Rennen</string>
         <string name="workout_add_cardio">Cardio &amp; HIIT</string>
         <string name="workout_add_yoga">Yoga</string>
-
+    
+    <!--  Workout Plan  -->
+    <string name="workout_plan_workouts_header">Geplante Workouts</string>
+    
     <!--  Kalorien  -->
         <!--  Header Content Descriptions  -->
         <string name="calories_header_add_description">Navigation zum Hinzufügen einer Mahlzeit</string>

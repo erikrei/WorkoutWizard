@@ -226,7 +226,7 @@ fun WorkoutTodayPlanned(
                             val bottomPadding = if (index < workoutUiState.workouts.size - 1) dimensionResource(id = R.dimen.same_content_space) else
                                 dimensionResource(id = R.dimen.zero_dp)
                             WorkoutCardExpanded(
-                                workout = workout,
+                                workout = workout.data,
                                 removeWorkout = { workoutViewModel.removeTodayWorkout(index) },
                                 modifier = Modifier
                                     .padding(bottom = bottomPadding)

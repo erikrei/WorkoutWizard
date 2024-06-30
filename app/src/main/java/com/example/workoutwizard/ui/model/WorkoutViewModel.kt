@@ -3,6 +3,7 @@ package com.example.workoutwizard.ui.model
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.example.workoutwizard.data.Datasource
+import com.example.workoutwizard.data.Workout
 import com.example.workoutwizard.data.WorkoutData
 import com.example.workoutwizard.data.WorkoutUiState
 import com.example.workoutwizard.helper.getLocalDateOfSelectedDay
@@ -21,21 +22,21 @@ class WorkoutViewModel: ViewModel() {
         initTodayWorkouts()
     }
 
-    fun addWorkout(workout: WorkoutData) {
+    fun addWorkout(workout: Workout) {
         if (workout.createdAt == getLocalDateOfSelectedDay()) {
             _uiState.update {
                 currentState ->
                     currentState.copy(
-                        todayWorkouts = uiState.value.todayWorkouts.plus(workout)
+                        todayWorkouts = uiState.value.todayWorkouts.plus(workout),
                     )
             }
-        } else {
-            _uiState.update {
-                    currentState ->
+        }
+
+        _uiState.update {
+            currentState ->
                 currentState.copy(
                     workouts = uiState.value.workouts.plus(workout)
                 )
-            }
         }
     }
 
@@ -62,21 +63,23 @@ class WorkoutViewModel: ViewModel() {
     }
 
     private fun createWorkouts() {
-        val plannedWorkoutsList = mutableListOf<WorkoutData>()
+        val plannedWorkoutsList = mutableListOf<Workout>()
 
         for(i in 0..<WorkoutData.entries.size) {
-            val workout = WorkoutData.entries[i]
+            val workout = Workout(
+                data = WorkoutData.entries[i]
+            )
 
             plannedWorkoutsList.add(workout)
         }
 
-        plannedWorkoutsList[0].createdAt = LocalDate.of(2024, 6, 29)
-        plannedWorkoutsList[1].createdAt = LocalDate.of(2024, 6, 2)
+        plannedWorkoutsList[0].createdAt = LocalDate.of(2024, 6, 30)
+        plannedWorkoutsList[1].createdAt = LocalDate.of(2024, 6, 30)
         plannedWorkoutsList[2].createdAt = LocalDate.of(2024, 6, 29)
         plannedWorkoutsList[3].createdAt = LocalDate.of(2024, 6, 29)
         plannedWorkoutsList[4].createdAt = LocalDate.of(2024, 6, 27)
         plannedWorkoutsList[5].createdAt = LocalDate.of(2024, 6, 26)
-        plannedWorkoutsList[6].createdAt = LocalDate.of(2024, 6, 23)
+//        plannedWorkoutsList[6].createdAt = LocalDate.of(2024, 6, 23)
 
         for(i in 0..<plannedWorkoutsList.size) {
             Log.i("WorkoutViewModel", plannedWorkoutsList[i].createdAt.toString())
