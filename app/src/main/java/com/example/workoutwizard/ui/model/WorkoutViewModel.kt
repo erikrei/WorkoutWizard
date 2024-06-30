@@ -1,12 +1,9 @@
 package com.example.workoutwizard.ui.model
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
-import com.example.workoutwizard.data.Datasource
 import com.example.workoutwizard.data.Workout
 import com.example.workoutwizard.data.WorkoutData
 import com.example.workoutwizard.data.WorkoutUiState
-import com.example.workoutwizard.helper.getLocalDateOfSelectedDay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -19,19 +16,9 @@ class WorkoutViewModel: ViewModel() {
 
     init {
         createWorkouts()
-        initTodayWorkouts()
     }
 
     fun addWorkout(workout: Workout) {
-        if (workout.createdAt == getLocalDateOfSelectedDay()) {
-            _uiState.update {
-                currentState ->
-                    currentState.copy(
-                        todayWorkouts = uiState.value.todayWorkouts.plus(workout),
-                    )
-            }
-        }
-
         _uiState.update {
             currentState ->
                 currentState.copy(
@@ -40,24 +27,26 @@ class WorkoutViewModel: ViewModel() {
         }
     }
 
-    private fun initTodayWorkouts() {
-        val todayWorkouts = uiState.value.workouts.filter {
-            it.createdAt.toString() == LocalDate.now().toString()
-        }
-
+    fun editWorkout(workout: Workout) {
         _uiState.update {
             currentState ->
                 currentState.copy(
-                    todayWorkouts = todayWorkouts
+                    workouts = uiState.value.workouts.map {
+                        if (it.workoutID.toString() == workout.workoutID.toString()) {
+                            workout
+                        } else {
+                            it
+                        }
+                    }
                 )
         }
     }
 
-    fun removeTodayWorkout(workoutIndex: Int) {
+    fun removeWorkout(workoutID: String) {
         _uiState.update {
             currentState ->
                 currentState.copy(
-                    todayWorkouts = uiState.value.todayWorkouts.filterIndexed { index, _ -> index != workoutIndex }
+                    workouts = uiState.value.workouts.filter { it.workoutID.toString() != workoutID }
                 )
         }
     }

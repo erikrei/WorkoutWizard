@@ -53,11 +53,10 @@ data class Workout(
     var createdAt: LocalDate = LocalDate.now(),
 //    val caloriesBurned: Int,
     var completed: Boolean = false,
-    val workoutID: UUID = UUID.randomUUID()
+    val workoutID: UUID = UUID.randomUUID(),
+    var note: String = ""
 )
 
 data class WorkoutUiState(
     val workouts: List<Workout> = mutableListOf(),
-    val todayWorkouts: List<Workout> = mutableListOf(),
-    val todayFinished: Int = 2
 )
