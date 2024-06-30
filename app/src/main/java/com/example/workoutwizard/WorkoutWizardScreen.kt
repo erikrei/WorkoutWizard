@@ -279,6 +279,7 @@ fun WorkoutWizardApp(
                     WorkoutEditScreen(
                         workoutID = workoutID,
                         workoutViewModel = workoutViewModel,
+                        onWorkoutChange = { navController.navigate(MainNavigationType.MAIN_OVERVIEW.name) }
                     )
                 }
 

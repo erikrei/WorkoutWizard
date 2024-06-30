@@ -19,7 +19,8 @@ fun InputField(
     @StringRes label: Int,
     modifier: Modifier = Modifier,
     keyboardType: KeyboardType = KeyboardType.Text,
-    isLast: Boolean = false
+    isLast: Boolean = false,
+    singleLine: Boolean = true
 ) {
     val imeAction = if (isLast) ImeAction.Done else ImeAction.Next
 
@@ -29,7 +30,7 @@ fun InputField(
         label = {
             Text(text = stringResource(id = label))
         },
-        singleLine = true,
+        singleLine = singleLine,
         keyboardOptions = KeyboardOptions.Default.copy(
             keyboardType = keyboardType,
             imeAction = imeAction

@@ -1,6 +1,7 @@
 package com.example.workoutwizard.ui
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -34,6 +35,7 @@ import com.example.workoutwizard.R
 import com.example.workoutwizard.data.Workout
 import com.example.workoutwizard.data.WorkoutUiState
 import com.example.workoutwizard.helper.getColorWithAlpha
+import com.example.workoutwizard.helper.getTodayWorkouts
 import com.example.workoutwizard.helper.percentageTwoNumbers
 import com.example.workoutwizard.ui.components.ExpandedContentWorkoutProgress
 import com.example.workoutwizard.ui.components.HeaderWithContent
@@ -68,7 +70,7 @@ fun WorkoutScreen(
                 )
             }
         )
-        if (uiState.todayWorkouts.isNotEmpty()) {
+        if (getTodayWorkouts(uiState.workouts).isNotEmpty()) {
             MainSpacer()
             WorkoutProgress(
                 workoutUiState = uiState
@@ -118,7 +120,9 @@ fun WorkoutProgress(
     modifier: Modifier = Modifier,
     workoutUiState: WorkoutUiState
 ) {
-    val percentage = percentageTwoNumbers(Pair(workoutUiState.todayFinished, workoutUiState.todayWorkouts.size))
+    val todayWorkouts = getTodayWorkouts(workoutUiState.workouts)
+    val todayCompleted = todayWorkouts.filter { it.completed }.size
+    val percentage = percentageTwoNumbers(Pair(todayCompleted, todayWorkouts.size))
 
     val progressBackgroundColor = when(floor(percentage.second).toInt()) {
         in 0..33 -> Color.Red
@@ -144,13 +148,13 @@ fun WorkoutProgress(
                 )
         ) {
             Text(
-                text = "${workoutUiState.todayFinished} von ${workoutUiState.todayWorkouts.size} (${percentage.first} %)",
+                text = "$todayCompleted von ${todayWorkouts.size} (${percentage.first} %)",
                 modifier = Modifier
                     .align(Alignment.Center),
                 fontWeight = FontWeight.Bold
             )
             LinearProgressIndicator(
-                progress = workoutUiState.todayFinished.toFloat() / workoutUiState.todayWorkouts.size,
+                progress = todayCompleted.toFloat() / getTodayWorkouts(workoutUiState.workouts).size,
                 color = progressBackgroundColor,
                 trackColor = alphaBackgroundColor,
                 modifier = Modifier
@@ -210,7 +214,8 @@ fun WorkoutTodayPlanned(
     planWorkoutNavigation: () -> Unit = {},
     editWorkoutNavigation: (Workout) -> Unit = {}
 ) {
-    if (workoutUiState.todayWorkouts.isEmpty()) {
+    val todayWorkouts = getTodayWorkouts(workoutUiState.workouts)
+    if (todayWorkouts.isEmpty()) {
         HeaderWithContent(
             headerText = R.string.workout_today_empty
         ) {
@@ -225,13 +230,15 @@ fun WorkoutTodayPlanned(
             modifier = modifier
         ) {
             Column {
-                workoutUiState.todayWorkouts.forEachIndexed {
+                todayWorkouts.forEachIndexed {
                     index, workout ->
-                        val bottomPadding = if (index < workoutUiState.workouts.size - 1) dimensionResource(id = R.dimen.same_content_space) else
-                            dimensionResource(id = R.dimen.zero_dp)
+                        val bottomPadding =
+                            if (index < workoutUiState.workouts.size - 1)
+                                dimensionResource(id = R.dimen.same_content_space)
+                            else dimensionResource(id = R.dimen.zero_dp)
                             WorkoutCardExpanded(
                                 workout = workout,
-                                removeWorkout = { workoutViewModel.removeTodayWorkout(index) },
+                                removeWorkout = { workoutViewModel.removeWorkout(workout.workoutID.toString()) },
                                 editWorkoutNavigation = editWorkoutNavigation,
                                 modifier = Modifier
                                     .padding(bottom = bottomPadding)

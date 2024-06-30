@@ -26,6 +26,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.workoutwizard.R
 import com.example.workoutwizard.data.Workout
 import com.example.workoutwizard.data.WorkoutData
+import com.example.workoutwizard.helper.getTodayWorkouts
 import com.example.workoutwizard.helper.overviewDateString
 import com.example.workoutwizard.ui.components.CaloriesCard
 import com.example.workoutwizard.ui.components.HeaderWithContent
@@ -56,7 +57,7 @@ fun OverviewScreen(
         OverviewHeader()
         MainSpacer()
         OverviewTodayPlanned(
-            plannedWorkouts = uiState.todayWorkouts,
+            plannedWorkouts = getTodayWorkouts(uiState.workouts),
             addWorkoutNavigation = addWorkoutNavigation,
             editWorkoutNavigation = editWorkoutNavigation
         )

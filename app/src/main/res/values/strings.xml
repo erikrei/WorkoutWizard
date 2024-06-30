@@ -108,6 +108,8 @@
 
     <!--  Workout Edit  -->
     <string name="workout_edit_planned">Geplant</string>
+    <string name="workout_edit_notes">Notizen</string>
+    <string name="workout_edit_accept">Workout abschließen</string>
     
     <!--  Kalorien  -->
         <!--  Header Content Descriptions  -->
