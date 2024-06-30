@@ -16,19 +16,19 @@ class CaloriesViewModel: ViewModel() {
         initCaloriesTestData()
     }
 
-    fun setCaloriesBurned(workouts: List<WorkoutData>) {
-        var totalBurned = 0
-        workouts.forEach {
-            it ->
-                totalBurned += it.caloriesBurned
-        }
-        _uiState.update {
-            currentState ->
-                currentState.copy(
-                    todayCaloriesBurned = totalBurned
-                )
-        }
-    }
+//    fun setCaloriesBurned(workouts: List<WorkoutData>) {
+//        var totalBurned = 0
+//        workouts.forEach {
+//            it ->
+//                totalBurned += it.caloriesBurned
+//        }
+//        _uiState.update {
+//            currentState ->
+//                currentState.copy(
+//                    todayCaloriesBurned = totalBurned
+//                )
+//        }
+//    }
 
     private fun initCaloriesTestData() {
         _uiState.update {

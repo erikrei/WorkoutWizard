@@ -43,6 +43,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.workoutwizard.R
 import com.example.workoutwizard.data.Datasource
+import com.example.workoutwizard.data.Workout
 import com.example.workoutwizard.data.WorkoutData
 import com.example.workoutwizard.data.WorkoutSection
 import com.example.workoutwizard.helper.getLocalDateOfSelectedDay
@@ -288,8 +289,11 @@ fun WorkoutAdd(
             MainSpacer()
             Button(
                 onClick = {
-                    workout.createdAt = getLocalDateOfSelectedDay(date.selectedDateMillis!!)
-                    workoutViewModel.addWorkout(workout)
+                    val newWorkout = Workout(
+                        data = workout,
+                        createdAt = getLocalDateOfSelectedDay(date.selectedDateMillis!!),
+                    )
+                    workoutViewModel.addWorkout(newWorkout)
                     scope.launch {
                         snackbarHostState.showSnackbar(
                             message = "$workoutTitle erfolgreich hinzugefügt",

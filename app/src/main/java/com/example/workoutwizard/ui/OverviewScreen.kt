@@ -24,6 +24,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.workoutwizard.R
+import com.example.workoutwizard.data.Workout
 import com.example.workoutwizard.data.WorkoutData
 import com.example.workoutwizard.helper.overviewDateString
 import com.example.workoutwizard.ui.components.CaloriesCard
@@ -102,7 +103,7 @@ fun OverviewHeader(
 @Composable
 fun OverviewTodayPlanned(
     modifier: Modifier = Modifier,
-    plannedWorkouts: List<WorkoutData>,
+    plannedWorkouts: List<Workout>,
     addWorkoutNavigation: () -> Unit = {}
 ) {
     HeaderWithContent(
@@ -118,7 +119,7 @@ fun OverviewTodayPlanned(
                     if (index < plannedWorkouts.size - 1) R.dimen.same_content_space
                     else R.dimen.zero_dp
                 WorkoutCard(
-                    workout = workout,
+                    workout = workout.data,
                     modifier = Modifier.padding(
                         end = dimensionResource(id = padding)
                     )

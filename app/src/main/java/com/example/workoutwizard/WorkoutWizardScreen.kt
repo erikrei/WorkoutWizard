@@ -223,7 +223,9 @@ fun WorkoutWizardApp(
                 composable(
                     route = SubNavigationType.SUB_WORKOUT_PLAN.name
                 ) {
-                    WorkoutPlanScreen()
+                    WorkoutPlanScreen(
+                        workoutViewModel = workoutViewModel
+                    )
                 }
 
                 composable(

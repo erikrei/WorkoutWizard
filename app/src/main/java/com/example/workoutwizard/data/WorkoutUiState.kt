@@ -9,8 +9,6 @@ enum class WorkoutData(
     @StringRes val title: Int,
     @DrawableRes val img: Int,
     @StringRes val pillText: Int,
-    var createdAt: LocalDate = LocalDate.now(),
-    val caloriesBurned: Int = 80
 ) {
     JOGGEN(
         title = R.string.workout_card_title_joggen,
@@ -49,8 +47,15 @@ enum class WorkoutData(
     )
 }
 
+data class Workout(
+    val data: WorkoutData,
+    var createdAt: LocalDate = LocalDate.now(),
+//    val caloriesBurned: Int,
+    var completed: Boolean = false
+)
+
 data class WorkoutUiState(
-    val workouts: List<WorkoutData> = mutableListOf(),
-    val todayWorkouts: List<WorkoutData> = mutableListOf(),
+    val workouts: List<Workout> = mutableListOf(),
+    val todayWorkouts: List<Workout> = mutableListOf(),
     val todayFinished: Int = 2
 )
