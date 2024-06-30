@@ -105,6 +105,9 @@
     
     <!--  Workout Plan  -->
     <string name="workout_plan_workouts_header">Geplante Workouts</string>
+
+    <!--  Workout Edit  -->
+    <string name="workout_edit_planned">Geplant</string>
     
     <!--  Kalorien  -->
         <!--  Header Content Descriptions  -->
