@@ -31,6 +31,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.workoutwizard.R
+import com.example.workoutwizard.data.Workout
 import com.example.workoutwizard.data.WorkoutUiState
 import com.example.workoutwizard.helper.getColorWithAlpha
 import com.example.workoutwizard.helper.percentageTwoNumbers
@@ -49,7 +50,8 @@ fun WorkoutScreen(
     modifier: Modifier = Modifier,
     workoutViewModel: WorkoutViewModel = viewModel(),
     addWorkoutNavigation: () -> Unit = {},
-    planWorkoutNavigation: () -> Unit = {}
+    planWorkoutNavigation: () -> Unit = {},
+    editWorkoutNavigation: (Workout) -> Unit = {}
 ) {
     val uiState by workoutViewModel.uiState.collectAsState()
 
@@ -77,7 +79,8 @@ fun WorkoutScreen(
             workoutViewModel = workoutViewModel,
             addWorkoutNavigation = addWorkoutNavigation,
             planWorkoutNavigation = planWorkoutNavigation,
-            workoutUiState = uiState
+            workoutUiState = uiState,
+            editWorkoutNavigation = editWorkoutNavigation
         )
     }
 }
@@ -204,7 +207,8 @@ fun WorkoutTodayPlanned(
     workoutViewModel: WorkoutViewModel = viewModel(),
     workoutUiState: WorkoutUiState,
     addWorkoutNavigation: () -> Unit = {},
-    planWorkoutNavigation: () -> Unit = {}
+    planWorkoutNavigation: () -> Unit = {},
+    editWorkoutNavigation: (Workout) -> Unit = {}
 ) {
     if (workoutUiState.todayWorkouts.isEmpty()) {
         HeaderWithContent(
@@ -222,12 +226,13 @@ fun WorkoutTodayPlanned(
         ) {
             Column {
                 workoutUiState.todayWorkouts.forEachIndexed {
-                        index, workout ->
-                            val bottomPadding = if (index < workoutUiState.workouts.size - 1) dimensionResource(id = R.dimen.same_content_space) else
-                                dimensionResource(id = R.dimen.zero_dp)
+                    index, workout ->
+                        val bottomPadding = if (index < workoutUiState.workouts.size - 1) dimensionResource(id = R.dimen.same_content_space) else
+                            dimensionResource(id = R.dimen.zero_dp)
                             WorkoutCardExpanded(
-                                workout = workout.data,
+                                workout = workout,
                                 removeWorkout = { workoutViewModel.removeTodayWorkout(index) },
+                                editWorkoutNavigation = editWorkoutNavigation,
                                 modifier = Modifier
                                     .padding(bottom = bottomPadding)
                             )

@@ -56,7 +56,6 @@
 
     <!--  Workout Button Text  -->
     <string name="workout_button_text">Zum Workout</string>
-    <string name="workout_button_text_start">Workout starten</string>
 
     <!--  Übersicht  -->
     <string name="overview_today_planned">Workouts geplant</string>

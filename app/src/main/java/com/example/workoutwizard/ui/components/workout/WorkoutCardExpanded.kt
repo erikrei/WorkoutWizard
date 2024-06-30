@@ -22,6 +22,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.workoutwizard.R
+import com.example.workoutwizard.data.Workout
 import com.example.workoutwizard.data.WorkoutData
 import com.example.workoutwizard.ui.components.ImageFillSizeAlpha
 import com.example.workoutwizard.ui.components.TextPill
@@ -30,8 +31,9 @@ import com.example.workoutwizard.ui.theme.WorkoutWizardTheme
 @Composable
 fun WorkoutCardExpanded(
     modifier: Modifier = Modifier,
-    workout: WorkoutData,
-    removeWorkout: () -> Unit = {}
+    workout: Workout,
+    removeWorkout: () -> Unit = {},
+    editWorkoutNavigation: (Workout) -> Unit = {}
 ) {
     Box(
         modifier = modifier
@@ -44,17 +46,17 @@ fun WorkoutCardExpanded(
             )
     ) {
         ImageFillSizeAlpha(
-            image = workout.img,
+            image = workout.data.img,
             alpha = .5f,
         )
         Text(
-            text = stringResource(id = workout.title),
+            text = stringResource(id = workout.data.title),
             modifier = Modifier
                 .padding(dimensionResource(id = R.dimen.workout_card_space_padding)),
             style = MaterialTheme.typography.bodyLarge
         )
         TextPill(
-            text = stringResource(id = workout.pillText),
+            text = stringResource(id = workout.data.pillText),
             backgroundColor = MaterialTheme.colorScheme.primaryContainer,
             textColor = MaterialTheme.colorScheme.onPrimaryContainer,
             textStyle = MaterialTheme.typography.labelLarge,
@@ -63,13 +65,13 @@ fun WorkoutCardExpanded(
                 .padding(dimensionResource(id = R.dimen.workout_card_space_padding))
         )
         Button(
-            onClick = { /*TODO*/ },
+            onClick = { editWorkoutNavigation(workout) },
             modifier = Modifier
                 .align(Alignment.BottomEnd)
                 .padding(dimensionResource(id = R.dimen.workout_card_space_padding))
         ) {
             Text(
-                text = stringResource(id = R.string.workout_button_text_start)
+                text = stringResource(id = R.string.workout_button_text)
             )
         }
         IconButton(
@@ -90,6 +92,8 @@ fun WorkoutCardExpanded(
 @Composable
 fun WorkoutCardExpandedPreview() {
     WorkoutWizardTheme {
-        WorkoutCardExpanded(workout = WorkoutData.SITUP)
+        WorkoutCardExpanded(workout = Workout(
+            WorkoutData.SITUP
+        ))
     }
 }
