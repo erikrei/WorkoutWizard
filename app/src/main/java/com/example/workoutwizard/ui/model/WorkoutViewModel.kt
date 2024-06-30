@@ -79,11 +79,7 @@ class WorkoutViewModel: ViewModel() {
         plannedWorkoutsList[3].createdAt = LocalDate.of(2024, 6, 29)
         plannedWorkoutsList[4].createdAt = LocalDate.of(2024, 6, 27)
         plannedWorkoutsList[5].createdAt = LocalDate.of(2024, 6, 26)
-//        plannedWorkoutsList[6].createdAt = LocalDate.of(2024, 6, 23)
-
-        for(i in 0..<plannedWorkoutsList.size) {
-            Log.i("WorkoutViewModel", plannedWorkoutsList[i].createdAt.toString())
-        }
+        plannedWorkoutsList[6].createdAt = LocalDate.of(2024, 6, 23)
 
         _uiState.update {
             currentState ->

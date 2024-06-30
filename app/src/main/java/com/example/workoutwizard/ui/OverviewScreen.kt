@@ -44,7 +44,8 @@ fun OverviewScreen(
     workoutViewModel: WorkoutViewModel = viewModel(),
     caloriesViewModel: CaloriesViewModel = viewModel(),
     addWorkoutNavigation: () -> Unit = {},
-    addCaloriesNavigation: () -> Unit = {}
+    addCaloriesNavigation: () -> Unit = {},
+    editWorkoutNavigation: (Workout) -> Unit = {}
 ) {
     val uiState by workoutViewModel.uiState.collectAsState()
 
@@ -55,8 +56,9 @@ fun OverviewScreen(
         OverviewHeader()
         MainSpacer()
         OverviewTodayPlanned(
-            plannedWorkouts = uiState.workouts,
-            addWorkoutNavigation = addWorkoutNavigation
+            plannedWorkouts = uiState.todayWorkouts,
+            addWorkoutNavigation = addWorkoutNavigation,
+            editWorkoutNavigation = editWorkoutNavigation
         )
         MainSpacer()
 //        OverviewRecentWorkouts(
@@ -104,7 +106,8 @@ fun OverviewHeader(
 fun OverviewTodayPlanned(
     modifier: Modifier = Modifier,
     plannedWorkouts: List<Workout>,
-    addWorkoutNavigation: () -> Unit = {}
+    addWorkoutNavigation: () -> Unit = {},
+    editWorkoutNavigation: (Workout) -> Unit = {}
 ) {
     HeaderWithContent(
         headerText = R.string.overview_today_planned,
@@ -119,7 +122,8 @@ fun OverviewTodayPlanned(
                     if (index < plannedWorkouts.size - 1) R.dimen.same_content_space
                     else R.dimen.zero_dp
                 WorkoutCard(
-                    workout = workout.data,
+                    workout = workout,
+                    editWorkoutNavigation = editWorkoutNavigation,
                     modifier = Modifier.padding(
                         end = dimensionResource(id = padding)
                     )
