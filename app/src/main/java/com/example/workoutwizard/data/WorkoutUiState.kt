@@ -50,8 +50,7 @@ enum class WorkoutData(
 }
 
 data class WorkoutUiState(
-    val plannedWorkouts: List<WorkoutData> = mutableListOf(),
+    val workouts: List<WorkoutData> = mutableListOf(),
     val todayWorkouts: List<WorkoutData> = mutableListOf(),
-    val recentWorkouts: List<WorkoutData> = mutableListOf(),
     val todayFinished: Int = 2
 )

@@ -66,10 +66,12 @@ fun WorkoutScreen(
                 )
             }
         )
-        MainSpacer()
-        WorkoutProgress(
-            workoutUiState = uiState
-        )
+        if (uiState.todayWorkouts.isNotEmpty()) {
+            MainSpacer()
+            WorkoutProgress(
+                workoutUiState = uiState
+            )
+        }
         MainSpacer()
         WorkoutTodayPlanned(
             workoutViewModel = workoutViewModel,
@@ -221,11 +223,11 @@ fun WorkoutTodayPlanned(
             Column {
                 workoutUiState.todayWorkouts.forEachIndexed {
                         index, workout ->
-                            val bottomPadding = if (index < workoutUiState.todayWorkouts.size - 1) dimensionResource(id = R.dimen.same_content_space) else
+                            val bottomPadding = if (index < workoutUiState.workouts.size - 1) dimensionResource(id = R.dimen.same_content_space) else
                                 dimensionResource(id = R.dimen.zero_dp)
                             WorkoutCardExpanded(
                                 workout = workout,
-                                removeWorkout = { workoutViewModel.removePlannedWorkout(index) },
+                                removeWorkout = { workoutViewModel.removeTodayWorkout(index) },
                                 modifier = Modifier
                                     .padding(bottom = bottomPadding)
                             )

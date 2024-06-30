@@ -45,6 +45,8 @@ import com.example.workoutwizard.R
 import com.example.workoutwizard.data.Datasource
 import com.example.workoutwizard.data.WorkoutData
 import com.example.workoutwizard.data.WorkoutSection
+import com.example.workoutwizard.helper.getLocalDateOfSelectedDay
+import com.example.workoutwizard.helper.getMillisecondsBeginningDay
 import com.example.workoutwizard.helper.overviewDateStringMilliseconds
 import com.example.workoutwizard.ui.components.ExpandedContentWorkoutSections
 import com.example.workoutwizard.ui.components.HeaderWithContent
@@ -286,7 +288,8 @@ fun WorkoutAdd(
             MainSpacer()
             Button(
                 onClick = {
-                    workoutViewModel.addPlannedWorkout(workout)
+                    workout.createdAt = getLocalDateOfSelectedDay(date.selectedDateMillis!!)
+                    workoutViewModel.addWorkout(workout)
                     scope.launch {
                         snackbarHostState.showSnackbar(
                             message = "$workoutTitle erfolgreich hinzugefügt",
@@ -335,7 +338,7 @@ fun WorkoutAddModalBottom(
         DatePicker(
             state = datePickerState,
             dateValidator = {
-                it >= System.currentTimeMillis()
+                it >= getMillisecondsBeginningDay()
             },
             showModeToggle = false,
             title = null,

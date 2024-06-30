@@ -100,7 +100,7 @@ fun WorkoutWizardApp(
                 navController = navController,
 //                startDestination = AuthType.LOGIN.name,
 //                startDestination = MainNavigationType.MAIN_OVERVIEW.name,
-                startDestination = SubNavigationType.SUB_WORKOUT_ADD.name
+                startDestination = SubNavigationType.SUB_WORKOUT_PLAN.name
 //                startDestination = MainNavigationType.MAIN_CALORIES.name
             ) {
 
