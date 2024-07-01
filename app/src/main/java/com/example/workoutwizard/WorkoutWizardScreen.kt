@@ -1,5 +1,6 @@
 package com.example.workoutwizard
 
+import android.util.Log
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -42,6 +43,7 @@ import com.example.workoutwizard.ui.model.CaloriesViewModel
 import com.example.workoutwizard.ui.model.InitialUserDataViewModel
 import com.example.workoutwizard.ui.model.WorkoutViewModel
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.launch
 
 @Composable
 fun WorkoutWizardApp(
@@ -99,39 +101,57 @@ fun WorkoutWizardApp(
                         )
                     ),
                 navController = navController,
-                startDestination = MainNavigationType.MAIN_OVERVIEW.name
+                startDestination = AuthType.LOGIN.name
             ) {
 
                 val authButtonClick: () -> Unit = {
-//                    if (authViewModel.uiState.value.authType === AuthType.LOGIN) {
-//                        auth.signInWithEmailAndPassword(
-//                            authViewModel.uiState.value.username,
-//                            authViewModel.uiState.value.password
-//                        ).addOnCompleteListener {
-//                                task ->
-//                            if (task.isSuccessful) {
-//                                Log.i("LoginAuthLayout", "Login erfolgreich")
-//                                val user = auth.currentUser
-//                            } else {
-//                                Log.i("LoginAuthLayout", "Login fehlgeschlagen")
-//                            }
-//                        }
-////                        navController.navigate(InitialUserDataStage.USER_DATA_INPUT.name)
-//                    } else {
-//                        auth.createUserWithEmailAndPassword(
-//                            authViewModel.uiState.value.username,
-//                            authViewModel.uiState.value.password
-//                        ).addOnCompleteListener {
-//                                task ->
-//                            if (task.isSuccessful) {
-//                                Log.i("RegisterAuthLayout", "Benutzer ${authViewModel.uiState.value.username} erstellt")
-//                            } else {
-//                                Log.i("RegisterAuthLayout", "Registrierung fehlgeschlagen")
-//                            }
-//                        }
-////                        navController.navigate(InitialUserDataStage.USER_DATA_INPUT.name)
-//                    }
-                    navController.navigate(MainNavigationType.MAIN_OVERVIEW.name)
+                    try {
+                        if (authViewModel.uiState.value.authType === AuthType.LOGIN) {
+                            auth.signInWithEmailAndPassword(
+                                authViewModel.uiState.value.username,
+                                authViewModel.uiState.value.password
+                            ).addOnCompleteListener {
+                                    task ->
+                                if (task.isSuccessful) {
+                                    Log.i("LoginAuthLayout", "Login erfolgreich")
+                                    val user = auth.currentUser
+                                } else {
+                                    Log.i("LoginAuthLayout", "Login fehlgeschlagen")
+                                }
+                            }
+                        } else {
+                            auth.createUserWithEmailAndPassword(
+                                authViewModel.uiState.value.username,
+                                authViewModel.uiState.value.password
+                            ).addOnCompleteListener {
+                                    task ->
+                                if (task.isSuccessful) {
+                                    Log.i("RegisterAuthLayout", "Benutzer ${authViewModel.uiState.value.username} erstellt")
+                                    authViewModel.changeAuthType()
+                                    scope.launch {
+                                        snackbarHostState.showSnackbar(
+                                            message = "Benutzer ${authViewModel.uiState.value.username} erfolgreich erstellt."
+                                        )
+                                    }
+                                    navController.navigate(AuthType.LOGIN.name)
+                                } else {
+                                    Log.i("RegisterAuthLayout", "Registrierung fehlgeschlagen")
+                                    scope.launch {
+                                        snackbarHostState.showSnackbar(
+                                            message = "Registrierung fehlgeschlagen."
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                    } catch (err: IllegalArgumentException) {
+                        scope.launch {
+                            snackbarHostState.showSnackbar(
+                                message = "Sie müssen Daten eingeben."
+                            )
+                        }
+                    }
+
                 }
 
                 // Authentifizierung
@@ -165,6 +185,7 @@ fun WorkoutWizardApp(
                         onNextClick = { navController.navigate(InitialUserDataStage.USER_DATA_OVERVIEW.name) }
                     )
                 }
+
                 composable(
                     route = InitialUserDataStage.USER_DATA_OVERVIEW.name
                 ) {
