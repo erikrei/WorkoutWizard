@@ -6,7 +6,6 @@ enum class AuthType(val title: String) {
 }
 
 data class AuthUiState(
-    val username: String = "",
+    val email: String = "",
     val password: String = "",
-    val authType: AuthType = AuthType.LOGIN
 )

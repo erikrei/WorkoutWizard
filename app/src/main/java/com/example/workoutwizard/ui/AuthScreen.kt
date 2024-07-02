@@ -22,7 +22,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.workoutwizard.R
@@ -31,17 +30,21 @@ import com.example.workoutwizard.ui.components.ImageFillSizeAlpha
 import com.example.workoutwizard.ui.components.InputField
 import com.example.workoutwizard.ui.components.InputFieldPassword
 import com.example.workoutwizard.ui.model.AuthViewModel
-import com.example.workoutwizard.ui.theme.WorkoutWizardTheme
-import com.google.firebase.auth.FirebaseAuth
 
 @Composable
 fun AuthLayout(
     modifier: Modifier = Modifier,
     onChangeAuthTypeClick: () -> Unit = {},
     onAuthButtonClick: () -> Unit = {},
-    authViewModel: AuthViewModel = viewModel()
+    authViewModel: AuthViewModel = viewModel(),
+    route: String?
 ) {
     val authUiState by authViewModel.uiState.collectAsState()
+
+    val authType =
+        if (route != null && route == AuthType.LOGIN.name)
+            AuthType.LOGIN
+        else AuthType.REGISTER
 
     Box(
         modifier = modifier
@@ -70,15 +73,15 @@ fun AuthLayout(
         AuthUserInput(
             modifier = Modifier
                 .align(Alignment.Center),
-            usernameValue = authUiState.username,
+            usernameValue = authUiState.email,
             passwordValue = authUiState.password,
-            authButtonText = authUiState.authType.title,
-            usernameValueChange = { authViewModel.onChangeUsername(it) },
+            authType = authType,
+            usernameValueChange = { authViewModel.onChangeEmail(it) },
             passwordValueChange = { authViewModel.onChangePassword(it) },
             onAuthButtonClick = onAuthButtonClick
         )
         AuthChange(
-            authType = authUiState.authType,
+            authType = authType,
             onChangeAuthTypeClick = onChangeAuthTypeClick,
             modifier = Modifier
                 .align(Alignment.BottomCenter)
@@ -92,7 +95,7 @@ fun AuthUserInput(
     passwordValue: String,
     usernameValueChange: (String) -> Unit,
     passwordValueChange: (String) -> Unit,
-    authButtonText: String,
+    authType: AuthType,
     onAuthButtonClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -103,12 +106,18 @@ fun AuthUserInput(
             bottom = 4.dp
         )
 
+    val authTypeReadable = if (authType == AuthType.LOGIN) "Login" else "Registrieren"
+
     Column(
         modifier = modifier
             .padding(
                 dimensionResource(id = R.dimen.auth_column_padding)
             )
     ) {
+        Text(
+            text =  authTypeReadable,
+            style = MaterialTheme.typography.headlineMedium,
+        )
         InputField(
             value = usernameValue,
             onValueChange = usernameValueChange,
@@ -130,7 +139,7 @@ fun AuthUserInput(
             )
         ) {
             Text(
-                text = authButtonText,
+                text = authTypeReadable,
                 style = MaterialTheme.typography.titleMedium
             )
         }
