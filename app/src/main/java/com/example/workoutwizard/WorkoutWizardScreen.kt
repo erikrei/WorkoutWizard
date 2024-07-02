@@ -1,6 +1,5 @@
 package com.example.workoutwizard
 
-import android.util.Log
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -43,7 +42,6 @@ import com.example.workoutwizard.ui.model.CaloriesViewModel
 import com.example.workoutwizard.ui.model.InitialUserDataViewModel
 import com.example.workoutwizard.ui.model.WorkoutViewModel
 import com.google.firebase.auth.FirebaseAuth
-import kotlinx.coroutines.launch
 
 @Composable
 fun WorkoutWizardApp(
@@ -56,6 +54,7 @@ fun WorkoutWizardApp(
     navController: NavHostController = rememberNavController()
 ) {
     val backstackEntry by navController.currentBackStackEntryAsState()
+    val route = backstackEntry?.destination?.route
 
     val onMainNavigationChange: (MainNavigationType) -> Unit = {
         navController.navigate(it.name)
@@ -63,12 +62,13 @@ fun WorkoutWizardApp(
 
     val onChangeAuthTypeClick: (AuthType) -> Unit = {
         navController.navigate(it.name)
-        authViewModel.changeAuthType()
     }
     
-    val containerPadding = when (backstackEntry?.destination?.route) {
+    val containerPadding = when (route) {
         AuthType.LOGIN.name -> dimensionResource(id = R.dimen.zero_dp)
         AuthType.REGISTER.name -> dimensionResource(id = R.dimen.zero_dp)
+        InitialUserDataStage.USER_DATA_INPUT.name -> dimensionResource(id = R.dimen.zero_dp)
+        InitialUserDataStage.USER_DATA_OVERVIEW.name -> dimensionResource(id = R.dimen.zero_dp)
         else -> dimensionResource(id = R.dimen.container_padding)
     }
 
@@ -103,57 +103,6 @@ fun WorkoutWizardApp(
                 navController = navController,
                 startDestination = AuthType.LOGIN.name
             ) {
-
-                val authButtonClick: () -> Unit = {
-                    try {
-                        if (authViewModel.uiState.value.authType === AuthType.LOGIN) {
-                            auth.signInWithEmailAndPassword(
-                                authViewModel.uiState.value.username,
-                                authViewModel.uiState.value.password
-                            ).addOnCompleteListener {
-                                    task ->
-                                if (task.isSuccessful) {
-                                    Log.i("LoginAuthLayout", "Login erfolgreich")
-                                    val user = auth.currentUser
-                                } else {
-                                    Log.i("LoginAuthLayout", "Login fehlgeschlagen")
-                                }
-                            }
-                        } else {
-                            auth.createUserWithEmailAndPassword(
-                                authViewModel.uiState.value.username,
-                                authViewModel.uiState.value.password
-                            ).addOnCompleteListener {
-                                    task ->
-                                if (task.isSuccessful) {
-                                    Log.i("RegisterAuthLayout", "Benutzer ${authViewModel.uiState.value.username} erstellt")
-                                    authViewModel.changeAuthType()
-                                    scope.launch {
-                                        snackbarHostState.showSnackbar(
-                                            message = "Benutzer ${authViewModel.uiState.value.username} erfolgreich erstellt."
-                                        )
-                                    }
-                                    navController.navigate(AuthType.LOGIN.name)
-                                } else {
-                                    Log.i("RegisterAuthLayout", "Registrierung fehlgeschlagen")
-                                    scope.launch {
-                                        snackbarHostState.showSnackbar(
-                                            message = "Registrierung fehlgeschlagen."
-                                        )
-                                    }
-                                }
-                            }
-                        }
-                    } catch (err: IllegalArgumentException) {
-                        scope.launch {
-                            snackbarHostState.showSnackbar(
-                                message = "Sie müssen Daten eingeben."
-                            )
-                        }
-                    }
-
-                }
-
                 // Authentifizierung
                 composable(
                     route = AuthType.LOGIN.name
@@ -161,7 +110,8 @@ fun WorkoutWizardApp(
                     AuthLayout(
                         authViewModel = authViewModel,
                         onChangeAuthTypeClick = { onChangeAuthTypeClick(AuthType.REGISTER) },
-                        onAuthButtonClick = authButtonClick
+                        onAuthButtonClick = { authViewModel.loginButtonClick(auth, scope, snackbarHostState, navController) },
+                        route = route
                     )
                 }
 
@@ -171,7 +121,8 @@ fun WorkoutWizardApp(
                     AuthLayout(
                         authViewModel = authViewModel,
                         onChangeAuthTypeClick = { onChangeAuthTypeClick(AuthType.LOGIN) },
-                        onAuthButtonClick = authButtonClick
+                        onAuthButtonClick = { authViewModel.registerButtonClick(auth, scope, snackbarHostState, navController) },
+                        route = route
                     )
                 }
 
