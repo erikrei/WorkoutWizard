@@ -1,14 +1,15 @@
 package com.example.workoutwizard.ui.model
 
 import android.util.Log
-import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavHostController
 import com.example.workoutwizard.data.AuthType
 import com.example.workoutwizard.data.AuthUiState
 import com.example.workoutwizard.data.InitialUserDataStage
+import com.example.workoutwizard.helper.db.registerUser
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -30,8 +31,6 @@ class AuthViewModel: ViewModel() {
                 ).addOnCompleteListener {
                         task ->
                     if (task.isSuccessful) {
-                        val user = auth.currentUser
-                        Log.i("AuthViewModel", user.toString())
                         navController.navigate(InitialUserDataStage.USER_DATA_INPUT.name)
                     } else {
                         toastMessage = "Login fehlgeschlagen. Versuchen Sie es erneut."
@@ -44,8 +43,8 @@ class AuthViewModel: ViewModel() {
         }
     }
 
-    val registerButtonClick: (FirebaseAuth, CoroutineScope, SnackbarHostState, NavHostController) -> Unit = {
-        auth, scope, snackbarHostState, navController ->
+    val registerButtonClick: (FirebaseAuth, CoroutineScope, SnackbarHostState, NavHostController, FirebaseFirestore) -> Unit = {
+        auth, scope, snackbarHostState, navController, db ->
             var toastMessage = ""
             try {
                 auth.createUserWithEmailAndPassword(
@@ -53,9 +52,10 @@ class AuthViewModel: ViewModel() {
                     uiState.value.password
                 ).addOnCompleteListener {
                     task ->
-                        if (task.isSuccessful) {
+                        if (task.isSuccessful && auth.currentUser != null) {
                             toastMessage = "Registrierung von ${uiState.value.email} erfolgreich. Sie können sich jetzt einloggen."
-                            navController.navigate(AuthType.LOGIN.name)
+                            val onSuccessRegister: () -> Unit = { navController.navigate(AuthType.LOGIN.name) }
+                            registerUser(auth.uid!!, uiState.value.email, db, onSuccessRegister)
                         } else {
                             toastMessage = "Registrierung fehlgeschlagen. Versuchen Sie es erneut."
                         }
