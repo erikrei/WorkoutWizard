@@ -42,11 +42,13 @@ import com.example.workoutwizard.ui.model.CaloriesViewModel
 import com.example.workoutwizard.ui.model.InitialUserDataViewModel
 import com.example.workoutwizard.ui.model.WorkoutViewModel
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
 @Composable
 fun WorkoutWizardApp(
     modifier: Modifier = Modifier,
     auth: FirebaseAuth,
+    db: FirebaseFirestore,
     authViewModel: AuthViewModel = viewModel(),
     initialUserDataViewModel: InitialUserDataViewModel = viewModel(),
     workoutViewModel: WorkoutViewModel = viewModel(),
@@ -121,7 +123,7 @@ fun WorkoutWizardApp(
                     AuthLayout(
                         authViewModel = authViewModel,
                         onChangeAuthTypeClick = { onChangeAuthTypeClick(AuthType.LOGIN) },
-                        onAuthButtonClick = { authViewModel.registerButtonClick(auth, scope, snackbarHostState, navController) },
+                        onAuthButtonClick = { authViewModel.registerButtonClick(auth, scope, snackbarHostState, navController, db) },
                         route = route
                     )
                 }
