@@ -49,11 +49,11 @@ enum class WorkoutData(
 }
 
 data class Workout(
-    val data: WorkoutData,
-    var createdAt: LocalDate = LocalDate.now(),
+    val data: WorkoutData? = null,
+    var createdAt: Long = 0,
 //    val caloriesBurned: Int,
     var completed: Boolean = false,
-    val workoutID: UUID = UUID.randomUUID(),
+    val workoutID: String = "",
     var note: String = ""
 )
 

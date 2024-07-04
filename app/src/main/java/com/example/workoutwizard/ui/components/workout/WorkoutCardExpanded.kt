@@ -46,7 +46,7 @@ fun WorkoutCardExpanded(
             )
     ) {
         ImageFillSizeAlpha(
-            image = workout.data.img,
+            image = workout.data!!.img,
             alpha = .5f,
         )
         Text(

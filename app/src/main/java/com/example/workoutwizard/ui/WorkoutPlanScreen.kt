@@ -51,7 +51,7 @@ fun WorkoutPlanScreen(
     val selectedWorkouts =
         if (date.selectedDateMillis != null)
             uiState.workouts.filter {
-                it.createdAt == getLocalDateOfSelectedDay(date.selectedDateMillis!!)
+                it.createdAt == getMillisecondsOfLocalDate(getLocalDateOfSelectedDay(date.selectedDateMillis!!))
             }
         else listOf()
 
@@ -115,7 +115,7 @@ fun WorkoutPlanSingleWorkout(
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Text(
-            text = stringResource(id = workout.data.title)
+            text = stringResource(id = workout.data!!.title)
         )
         Text(
             text = statusText
@@ -150,7 +150,7 @@ fun WorkoutPlanDatePicker(
     workouts: List<Workout>
 ) {
     val workoutDaysSelectable = workouts.map {
-        getMillisecondsOfLocalDate(it.createdAt)
+        it.createdAt
     }.toSet()
 
     DatePicker(

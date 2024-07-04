@@ -48,6 +48,7 @@ import com.example.workoutwizard.data.WorkoutData
 import com.example.workoutwizard.data.WorkoutSection
 import com.example.workoutwizard.helper.getLocalDateOfSelectedDay
 import com.example.workoutwizard.helper.getMillisecondsBeginningDay
+import com.example.workoutwizard.helper.getMillisecondsOfLocalDate
 import com.example.workoutwizard.helper.overviewDateStringMilliseconds
 import com.example.workoutwizard.ui.components.ExpandedContentWorkoutSections
 import com.example.workoutwizard.ui.components.HeaderWithContent
@@ -291,7 +292,7 @@ fun WorkoutAdd(
                 onClick = {
                     val newWorkout = Workout(
                         data = workout,
-                        createdAt = getLocalDateOfSelectedDay(date.selectedDateMillis!!),
+                        createdAt = getMillisecondsOfLocalDate(getLocalDateOfSelectedDay(date.selectedDateMillis!!)),
                     )
                     workoutViewModel.addWorkout(newWorkout)
                     scope.launch {
