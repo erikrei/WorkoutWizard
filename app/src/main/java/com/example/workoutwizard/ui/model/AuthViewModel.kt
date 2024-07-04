@@ -1,6 +1,5 @@
 package com.example.workoutwizard.ui.model
 
-import android.util.Log
 import androidx.compose.material3.SnackbarHostState
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavHostController
@@ -8,10 +7,10 @@ import com.example.workoutwizard.data.AuthType
 import com.example.workoutwizard.data.AuthUiState
 import com.example.workoutwizard.data.InitialUserDataStage
 import com.example.workoutwizard.data.MainNavigationType
+import com.example.workoutwizard.data.UserUiState
 import com.example.workoutwizard.helper.db.loginUser
 import com.example.workoutwizard.helper.db.registerUser
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,7 +23,12 @@ class AuthViewModel: ViewModel() {
     private val _uiState = MutableStateFlow(AuthUiState())
     val uiState: StateFlow<AuthUiState> = _uiState.asStateFlow()
 
-    val loginButtonClick: (FirebaseAuth, CoroutineScope, SnackbarHostState, NavHostController, FirebaseFirestore) -> Unit = {
+    val loginButtonClick: (FirebaseAuth,
+                           CoroutineScope,
+                           SnackbarHostState,
+                           NavHostController,
+                           FirebaseFirestore,
+                        ) -> Unit = {
             auth, scope, snackbarHostState, navController, db ->
                 var toastMessage = ""
                 try {
@@ -34,12 +38,13 @@ class AuthViewModel: ViewModel() {
                 ).addOnCompleteListener {
                         task ->
                     if (task.isSuccessful) {
-                        val onSuccessLogin: (DocumentSnapshot) -> Unit = {
-                            document ->
-                                val hasInitialData = document.get("createdInitialData")
-                                if (hasInitialData is Boolean && hasInitialData) {
-                                    navController.navigate(MainNavigationType.MAIN_OVERVIEW.name)
-                                } else navController.navigate(InitialUserDataStage.USER_DATA_INPUT.name)
+                        val onSuccessLogin: (UserUiState?) -> Unit = {
+                            user ->
+                                if (user != null) {
+                                    if (user.createdInitialData) {
+                                        navController.navigate(MainNavigationType.MAIN_OVERVIEW.name)
+                                    } else navController.navigate(InitialUserDataStage.USER_DATA_OVERVIEW.name)
+                                }
                         }
                         loginUser(auth.uid!!, db, onSuccessLogin)
                     } else {

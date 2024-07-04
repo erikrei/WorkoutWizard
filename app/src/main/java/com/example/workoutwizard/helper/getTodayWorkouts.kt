@@ -6,6 +6,6 @@ fun getTodayWorkouts(
     workouts: List<Workout>
 ): List<Workout> {
     return workouts.filter {
-        it.createdAt == getLocalDateOfSelectedDay()
+        it.createdAt == getMillisecondsOfLocalDate(getLocalDateOfSelectedDay())
     }
 }

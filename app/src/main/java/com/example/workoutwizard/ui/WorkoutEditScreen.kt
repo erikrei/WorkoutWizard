@@ -19,13 +19,12 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import com.example.workoutwizard.R
-import com.example.workoutwizard.helper.overviewDateString
+import com.example.workoutwizard.helper.overviewDateStringMilliseconds
 import com.example.workoutwizard.ui.components.HeaderWithContent
 import com.example.workoutwizard.ui.components.InputField
 import com.example.workoutwizard.ui.components.MainSpacer
 import com.example.workoutwizard.ui.components.NavigationHeader
 import com.example.workoutwizard.ui.model.WorkoutViewModel
-import java.time.LocalDate
 
 @Composable
 fun WorkoutEditScreen(
@@ -37,7 +36,7 @@ fun WorkoutEditScreen(
     val uiState by workoutViewModel.uiState.collectAsState()
 
     val selectedWorkout = uiState.workouts.find { 
-        it.workoutID.toString() == workoutID
+        it.workoutID == workoutID
     }
 
     var note by remember { mutableStateOf(selectedWorkout?.note ?: "") }
@@ -48,11 +47,11 @@ fun WorkoutEditScreen(
             modifier = modifier
         ) {
             NavigationHeader(
-                headerText = selectedWorkout.data.title
+                headerText = selectedWorkout.data!!.title
             )
             MainSpacer()
             WorkoutEditDate(
-                workoutDate = selectedWorkout.createdAt 
+                workoutDate = selectedWorkout.createdAt
             )
             MainSpacer()
             WorkoutEditNote(
@@ -118,7 +117,7 @@ fun WorkoutEditNote(
 @Composable
 fun WorkoutEditDate(
     modifier: Modifier = Modifier,
-    workoutDate: LocalDate
+    workoutDate: Long
 ) {
     Row(
         modifier = modifier,
@@ -132,7 +131,7 @@ fun WorkoutEditDate(
                 )
         )
         Text(
-            text = overviewDateString(workoutDate),
+            text = overviewDateStringMilliseconds(workoutDate),
             fontWeight = FontWeight.Bold
         )
     }

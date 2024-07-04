@@ -7,7 +7,7 @@
 
     <string name="auth_username_label">Benutzername</string>
     <string name="auth_password_label">Passwort</string>
-    
+
     <string name="auth_change_login">Noch nicht registriert?</string>
     <string name="auth_change_register">Bereits registriert?</string>
 

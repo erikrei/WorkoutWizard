@@ -238,7 +238,7 @@ fun WorkoutTodayPlanned(
                             else dimensionResource(id = R.dimen.zero_dp)
                             WorkoutCardExpanded(
                                 workout = workout,
-                                removeWorkout = { workoutViewModel.removeWorkout(workout.workoutID.toString()) },
+                                removeWorkout = { workoutViewModel.removeWorkout(workout.workoutID) },
                                 editWorkoutNavigation = editWorkoutNavigation,
                                 modifier = Modifier
                                     .padding(bottom = bottomPadding)
