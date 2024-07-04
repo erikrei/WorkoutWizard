@@ -112,7 +112,7 @@ fun WorkoutWizardApp(
                     AuthLayout(
                         authViewModel = authViewModel,
                         onChangeAuthTypeClick = { onChangeAuthTypeClick(AuthType.REGISTER) },
-                        onAuthButtonClick = { authViewModel.loginButtonClick(auth, scope, snackbarHostState, navController) },
+                        onAuthButtonClick = { authViewModel.loginButtonClick(auth, scope, snackbarHostState, navController, db) },
                         route = route
                     )
                 }

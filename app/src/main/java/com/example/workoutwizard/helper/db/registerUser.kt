@@ -3,14 +3,15 @@ package com.example.workoutwizard.helper.db
 import com.google.firebase.firestore.FirebaseFirestore
 
 val registerUser: (String, String, FirebaseFirestore, () -> Unit) -> Unit = {
-    userId, email, db, onSucess ->
+    userId, email, db, onSuccess ->
         val user = hashMapOf(
-                "_id" to userId,
-                "email" to email
+                "email" to email,
+                "createdInitialData" to false
         )
         db.collection("users")
-                .add(user)
+                .document(userId)
+                .set(user)
                 .addOnSuccessListener {
-                        onSucess()
+                        onSuccess()
                 }
 }

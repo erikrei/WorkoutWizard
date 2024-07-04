@@ -7,8 +7,11 @@ import androidx.navigation.NavHostController
 import com.example.workoutwizard.data.AuthType
 import com.example.workoutwizard.data.AuthUiState
 import com.example.workoutwizard.data.InitialUserDataStage
+import com.example.workoutwizard.data.MainNavigationType
+import com.example.workoutwizard.helper.db.loginUser
 import com.example.workoutwizard.helper.db.registerUser
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,8 +24,8 @@ class AuthViewModel: ViewModel() {
     private val _uiState = MutableStateFlow(AuthUiState())
     val uiState: StateFlow<AuthUiState> = _uiState.asStateFlow()
 
-    val loginButtonClick: (FirebaseAuth, CoroutineScope, SnackbarHostState, NavHostController) -> Unit = {
-            auth, scope, snackbarHostState, navController ->
+    val loginButtonClick: (FirebaseAuth, CoroutineScope, SnackbarHostState, NavHostController, FirebaseFirestore) -> Unit = {
+            auth, scope, snackbarHostState, navController, db ->
                 var toastMessage = ""
                 try {
                     auth.signInWithEmailAndPassword(
@@ -31,7 +34,14 @@ class AuthViewModel: ViewModel() {
                 ).addOnCompleteListener {
                         task ->
                     if (task.isSuccessful) {
-                        navController.navigate(InitialUserDataStage.USER_DATA_INPUT.name)
+                        val onSuccessLogin: (DocumentSnapshot) -> Unit = {
+                            document ->
+                                val hasInitialData = document.get("createdInitialData")
+                                if (hasInitialData is Boolean && hasInitialData) {
+                                    navController.navigate(MainNavigationType.MAIN_OVERVIEW.name)
+                                } else navController.navigate(InitialUserDataStage.USER_DATA_INPUT.name)
+                        }
+                        loginUser(auth.uid!!, db, onSuccessLogin)
                     } else {
                         toastMessage = "Login fehlgeschlagen. Versuchen Sie es erneut."
                         toastFeedback(scope, snackbarHostState, toastMessage)
