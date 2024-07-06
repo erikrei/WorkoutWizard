@@ -44,13 +44,12 @@ import com.example.workoutwizard.ui.theme.WorkoutWizardTheme
 @Composable
 fun InitialUserDataLayout(
     modifier: Modifier = Modifier,
-    initialUserDataViewModel: InitialUserDataViewModel
+    initialUserDataViewModel: InitialUserDataViewModel,
+    onComplete: () -> Unit = {}
 ) {
     val uiState by initialUserDataViewModel.uiState.collectAsState()
 
-    Log.i("InitialUserDataScreen", uiState.toString())
-
-    var stageNumber by remember { mutableIntStateOf(11) }
+    var stageNumber by remember { mutableIntStateOf(0) }
     val stage = InitialUserDataStage.entries[stageNumber]
 
     Box(
@@ -79,6 +78,7 @@ fun InitialUserDataLayout(
                 stageNumber = stageNumber,
                 onBackClick = { stageNumber-- },
                 onNextClick = { stageNumber++ },
+                onComplete = onComplete,
                 uiState = uiState,
                 modifier = Modifier
                     .weight(2F)
@@ -459,6 +459,7 @@ fun InitialUserDataButtons(
     stageNumber: Int,
     onBackClick: () -> Unit = {},
     onNextClick: () -> Unit = {},
+    onComplete: () -> Unit = {},
     uiState: InitialUserDataUiState
 ) {
     @StringRes val nextButtonText =
@@ -492,7 +493,10 @@ fun InitialUserDataButtons(
             buttonText = nextButtonText,
             shape = buttonShape,
             enabled = canNext,
-            onButtonClick = onNextClick
+            onButtonClick =
+                if (stageNumber != InitialUserDataStage.entries.size - 1)
+                    onNextClick
+                else onComplete
         )
     }
 }
