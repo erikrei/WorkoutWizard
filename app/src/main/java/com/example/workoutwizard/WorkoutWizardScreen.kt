@@ -25,6 +25,8 @@ import com.example.workoutwizard.data.Datasource.mainNavigationItems
 import com.example.workoutwizard.data.InitialUserDataStage
 import com.example.workoutwizard.data.MainNavigationType
 import com.example.workoutwizard.data.SubNavigationType
+import com.example.workoutwizard.helper.db.saveInitialData
+import com.example.workoutwizard.helper.db.setCreatedInitialData
 import com.example.workoutwizard.ui.AuthLayout
 import com.example.workoutwizard.ui.CaloriesAdd
 import com.example.workoutwizard.ui.CaloriesScreen
@@ -102,7 +104,7 @@ fun WorkoutWizardApp(
                         )
                     ),
                 navController = navController,
-                startDestination = InitialUserDataStage.USER_DATA_INTRO.name
+                startDestination = AuthType.LOGIN.name
             ) {
                 // Authentifizierung
                 composable(
@@ -140,30 +142,20 @@ fun WorkoutWizardApp(
                 ) {
                     InitialUserDataLayout(
                         initialUserDataViewModel = initialUserDataViewModel
-                    )
+                    ) {
+                        saveInitialData(
+                            auth.currentUser!!.uid,
+                            initialUserDataViewModel.uiState.value,
+                            db
+                        ) {
+                            setCreatedInitialData(
+                                auth.currentUser!!.uid,
+                                db
+                            )
+                            navController.navigate(MainNavigationType.MAIN_OVERVIEW.name)
+                        }
+                    }
                 }
-
-                // Initial Benutzerdaten
-//                composable(
-//                    route = InitialUserDataStage.USER_DATA_INPUT.name
-//                ) {
-//                    InitialUserDataLayout(
-//                        stage = InitialUserDataStage.USER_DATA_INPUT,
-//                        initialUserDataViewModel = initialUserDataViewModel,
-//                        onNextClick = { navController.navigate(InitialUserDataStage.USER_DATA_OVERVIEW.name) }
-//                    )
-//                }
-//
-//                composable(
-//                    route = InitialUserDataStage.USER_DATA_OVERVIEW.name
-//                ) {
-//                    InitialUserDataLayout(
-//                        stage = InitialUserDataStage.USER_DATA_OVERVIEW,
-//                        initialUserDataViewModel = initialUserDataViewModel,
-//                        onBackDataInputClick = { navController.navigate(InitialUserDataStage.USER_DATA_INPUT.name) },
-//                        onNextClick = { navController.navigate(MainNavigationType.MAIN_OVERVIEW.name) }
-//                    )
-//                }
 
                 // Main Navigation
                 composable(

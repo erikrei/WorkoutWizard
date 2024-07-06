@@ -44,7 +44,7 @@ class AuthViewModel: ViewModel() {
                                     if (user.createdInitialData) {
                                         navController.navigate(MainNavigationType.MAIN_OVERVIEW.name)
                                     }
-//                                    else navController.navigate(InitialUserDataStage.USER_DATA_OVERVIEW.name)
+                                    else navController.navigate(InitialUserDataStage.USER_DATA_INTRO.name)
                                 }
                         }
                         loginUser(auth.uid!!, db, onSuccessLogin)
