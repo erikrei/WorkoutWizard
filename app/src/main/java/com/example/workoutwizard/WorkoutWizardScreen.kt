@@ -69,8 +69,7 @@ fun WorkoutWizardApp(
     val containerPadding = when (route) {
         AuthType.LOGIN.name -> dimensionResource(id = R.dimen.zero_dp)
         AuthType.REGISTER.name -> dimensionResource(id = R.dimen.zero_dp)
-        InitialUserDataStage.USER_DATA_INPUT.name -> dimensionResource(id = R.dimen.zero_dp)
-        InitialUserDataStage.USER_DATA_OVERVIEW.name -> dimensionResource(id = R.dimen.zero_dp)
+        InitialUserDataStage.USER_DATA_INTRO.name -> dimensionResource(id = R.dimen.zero_dp)
         else -> dimensionResource(id = R.dimen.container_padding)
     }
 
@@ -103,7 +102,7 @@ fun WorkoutWizardApp(
                         )
                     ),
                 navController = navController,
-                startDestination = AuthType.LOGIN.name
+                startDestination = InitialUserDataStage.USER_DATA_INTRO.name
             ) {
                 // Authentifizierung
                 composable(
@@ -136,27 +135,35 @@ fun WorkoutWizardApp(
                     )
                 }
 
-                // Initial Benutzerdaten
                 composable(
-                    route = InitialUserDataStage.USER_DATA_INPUT.name
+                    route = InitialUserDataStage.USER_DATA_INTRO.name
                 ) {
                     InitialUserDataLayout(
-                        stage = InitialUserDataStage.USER_DATA_INPUT,
-                        initialUserDataViewModel = initialUserDataViewModel,
-                        onNextClick = { navController.navigate(InitialUserDataStage.USER_DATA_OVERVIEW.name) }
+                        initialUserDataViewModel = initialUserDataViewModel
                     )
                 }
 
-                composable(
-                    route = InitialUserDataStage.USER_DATA_OVERVIEW.name
-                ) {
-                    InitialUserDataLayout(
-                        stage = InitialUserDataStage.USER_DATA_OVERVIEW,
-                        initialUserDataViewModel = initialUserDataViewModel,
-                        onBackDataInputClick = { navController.navigate(InitialUserDataStage.USER_DATA_INPUT.name) },
-                        onNextClick = { navController.navigate(MainNavigationType.MAIN_OVERVIEW.name) }
-                    )
-                }
+                // Initial Benutzerdaten
+//                composable(
+//                    route = InitialUserDataStage.USER_DATA_INPUT.name
+//                ) {
+//                    InitialUserDataLayout(
+//                        stage = InitialUserDataStage.USER_DATA_INPUT,
+//                        initialUserDataViewModel = initialUserDataViewModel,
+//                        onNextClick = { navController.navigate(InitialUserDataStage.USER_DATA_OVERVIEW.name) }
+//                    )
+//                }
+//
+//                composable(
+//                    route = InitialUserDataStage.USER_DATA_OVERVIEW.name
+//                ) {
+//                    InitialUserDataLayout(
+//                        stage = InitialUserDataStage.USER_DATA_OVERVIEW,
+//                        initialUserDataViewModel = initialUserDataViewModel,
+//                        onBackDataInputClick = { navController.navigate(InitialUserDataStage.USER_DATA_INPUT.name) },
+//                        onNextClick = { navController.navigate(MainNavigationType.MAIN_OVERVIEW.name) }
+//                    )
+//                }
 
                 // Main Navigation
                 composable(

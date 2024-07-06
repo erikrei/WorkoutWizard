@@ -30,7 +30,7 @@ class AuthViewModel: ViewModel() {
                            FirebaseFirestore,
                         ) -> Unit = {
             auth, scope, snackbarHostState, navController, db ->
-                var toastMessage = ""
+                var toastMessage: String
                 try {
                     auth.signInWithEmailAndPassword(
                     uiState.value.email,
@@ -43,7 +43,8 @@ class AuthViewModel: ViewModel() {
                                 if (user != null) {
                                     if (user.createdInitialData) {
                                         navController.navigate(MainNavigationType.MAIN_OVERVIEW.name)
-                                    } else navController.navigate(InitialUserDataStage.USER_DATA_OVERVIEW.name)
+                                    }
+//                                    else navController.navigate(InitialUserDataStage.USER_DATA_OVERVIEW.name)
                                 }
                         }
                         loginUser(auth.uid!!, db, onSuccessLogin)
@@ -60,7 +61,7 @@ class AuthViewModel: ViewModel() {
 
     val registerButtonClick: (FirebaseAuth, CoroutineScope, SnackbarHostState, NavHostController, FirebaseFirestore) -> Unit = {
         auth, scope, snackbarHostState, navController, db ->
-            var toastMessage = ""
+            var toastMessage: String
             try {
                 auth.createUserWithEmailAndPassword(
                     uiState.value.email,

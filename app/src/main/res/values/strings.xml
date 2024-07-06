@@ -11,18 +11,6 @@
     <string name="auth_change_login">Noch nicht registriert?</string>
     <string name="auth_change_register">Bereits registriert?</string>
 
-    <string name="init_data_age">Alter</string>
-    <string name="init_data_height">Größe in cm</string>
-    <string name="init_data_weight">Gewicht in kg</string>
-
-    <string name="init_data_input_header">Wir benötigen einige Informationen</string>
-    <string name="init_data_overview_header">Übersicht Dateneingabe</string>
-
-    <string name="init_data_next_button">Zur Übersicht</string>
-    <string name="init_data_back_button">Angaben bearbeiten</string>
-    <string name="init_data_confirm_button">Angaben korrekt</string>
-
-
     <!--  Main Navigation Title  -->
     <string name="main_overview_header">Übersicht</string>
     <string name="main_workout_header">Workout</string>
@@ -118,4 +106,78 @@
     <!--  Kalorien Add  -->
     <string name="calories_add">Kalorien hinzufügen</string>
     <string name="calories_add_name">Name</string>
+    
+    
+    <!--  Initial Data  -->
+    <!--  Error if data missing  -->
+    <string name="init_data_missing_values">
+        Sie müssen zuerst alle Daten eingeben bevor Sie die Eingabe abschließen können.
+    </string>
+    <!--  Buttons  -->
+    <string name="init_data_button_previous">Zurück</string>
+    <string name="init_data_button_next">Weiter</string>
+    <string name="init_data_button_complete">Abschließen</string>
+    <!--  Headers  -->
+    <string name="init_data_header_intro">Ihre Daten</string>
+    <string name="init_data_header_sex">Geschlecht</string>
+    <string name="init_data_header_age">Alter</string>
+    <string name="init_data_header_height">Größe in cm</string>
+    <string name="init_data_header_weight">Gewicht in kg</string>
+    <string name="init_data_header_sleep_hours">Schlafstunden</string>
+    <string name="init_data_header_work_hours">Arbeitsstunden</string>
+    <string name="init_data_header_work_type">Art der Arbeit</string>
+    <string name="init_data_header_workout_hours">Sportstunden</string>
+    <string name="init_data_header_goal">Ziel</string>
+    <string name="init_data_header_goal_speed">Zielgeschwindigkeit</string>
+    <string name="init_data_header_overview">Übersicht</string>
+    <!--  Text Content  -->
+    <string name="init_data_content_intro">
+        Wir benötigen einige Informationen über Sie, um passende
+        Ratschläge über die Kalorienzufuhr geben zu können.
+    </string>
+    <string name="init_data_content_sex">
+        Der Grundumsatz eines Menschen, also die Menge an Energie, die der Körper in Ruhe zur
+        Aufrechterhaltung lebenswichtiger Funktionen benötigt, hängt von verschiedenen Faktoren ab.
+        Da dieser Grundumsatz bei Geschlechtern verschieden ist, wird das biologische Geschlecht benötigt.
+    </string>
+    <string name="init_data_content_age">
+        Das Alter beeinflusst den Grundumsatz, da jüngere Menschen oft einen höheren Stoffwechsel haben als ältere.
+    </string>
+    <string name="init_data_content_height">
+        Die Körperhöhe spielt eine Rolle, weil größere Menschen tendenziell mehr Energie benötigen.
+    </string>
+    <string name="init_data_content_weight">
+        Das Gewicht ist ebenfalls entscheidend, da eine größere Körpermasse mehr Energie verbraucht.
+    </string>
+    <string name="init_data_content_sleep_hours">
+        Zum Grundumsatz wird der Leistungsumsatz hinzugerechnet, der sich aus der Muskelarbeit und
+        Regulierung der Körpertemperatur ergibt. Aus diesem Grund werden verschiedene Aktivitäten
+        benötigt, die ein Mensch täglich ausübt. Die Berechnung des Leistungsumsatz beginnt bei der
+        Anzahl von Stunden, die täglich geschlafen werden.
+    </string>
+    <string name="init_data_content_work_hours">
+        Die Arbeitsstunden sind relevant, da mehr Arbeitszeit in der Regel mehr Energieaufwand
+        bedeutet.
+    </string>
+    <string name="init_data_content_work_type">
+        Der Arbeitstyp ist entscheidend, weil körperlich anstrengende Arbeit (z.B. Bauarbeit)
+        deutlich mehr Energie verbraucht als sitzende Tätigkeiten (z.B. Büroarbeit).
+    </string>
+    <string name="init_data_content_workout_hours">
+        Die Sportstunden spielen ebenfalls eine große Rolle, da sportliche Aktivitäten den
+        Energieverbrauch erhöhen.
+    </string>
+    <string name="init_data_content_goal">
+        Schlussendlich wird das gewollte Ziel benötigt, da die Kalorienzufuhr bei Gewichtsabnahme
+        weniger, während beim Muskelaufbau mehr beträgt als nötig.
+    </string>
+    <string name="init_data_content_goal_speed">
+        Das gewollte Ziel kann natürlich langsamer oder schneller erreicht werden je nachdem wie
+        viele Kalorien weniger oder mehr zu sich genommen werden. Beim Muskelaufbau spielt jedoch
+        verstärkt der sportliche Askept eine wichtige Rolle.
+    </string>
+    <string name="init_data_content_overview">
+        Die Übersicht über ihre angegebenen Informationen
+    </string>
+
 </resources>

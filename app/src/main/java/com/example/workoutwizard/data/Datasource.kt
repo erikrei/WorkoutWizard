@@ -13,8 +13,30 @@ object Datasource {
     val forbiddenDestination = listOf(
         "LOGIN",
         "REGISTER",
-        "USER_DATA_INPUT",
-        "USER_DATA_OVERVIEW"
+        "USER_DATA_INTRO"
+    )
+
+    val initDataSexOptions = listOf(
+        "männlich",
+        "weiblich"
+    )
+
+    val initDataGoalOptions = listOf(
+        "Gewichtsabnahme",
+        "Muskelaufbau"
+    )
+
+    val initDataGoalSpeedOptions = listOf(
+        "langsam",
+        "normal",
+        "schnell"
+    )
+
+    val initDataWorkTypeOptions = listOf(
+        "sitzend, wenig körperliche Aktivität",
+        "überwiegend sitzend, gehend und stehend",
+        "überwiegend stehend und gehend",
+        "anstrengende körperliche Arbeit"
     )
 
     val workoutSections = listOf(
