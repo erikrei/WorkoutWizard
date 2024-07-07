@@ -61,11 +61,12 @@ data class InitialUserDataUiState(
     val sex: Int = 0,
     val age: String = "27",
     val height: String = "178",
-    val weight: String = "95",
-    val sleepHours: String = "4",
+    val weight: String = "98",
+    val sleepHours: String = "7",
     val workHours: String = "4",
     val workType: Int = 2,
     val workoutHours: String = "2",
     val goal: Int = 0,
     val goalSpeed: Int = 1
 )
+
