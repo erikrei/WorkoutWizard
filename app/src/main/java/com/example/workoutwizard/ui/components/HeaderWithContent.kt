@@ -34,6 +34,7 @@ fun HeaderWithContent(
     modifier: Modifier = Modifier,
     @StringRes headerText: Int,
     style: TextStyle = MaterialTheme.typography.titleMedium,
+    color: Color = Color.Unspecified,
     @DrawableRes headerIcon: Int? = null,
     @StringRes headerIconDescription: Int? = null,
     activeHeaderIconColor: Color = MaterialTheme.colorScheme.primaryContainer,
@@ -59,6 +60,7 @@ fun HeaderWithContent(
             Text(
                 text = stringResource(id = headerText),
                 style = style,
+                color = color
             )
             if (headerIcon != null) {
                 IconButton(

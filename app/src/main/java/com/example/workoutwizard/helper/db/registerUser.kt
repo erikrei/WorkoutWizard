@@ -19,13 +19,16 @@ val registerUser: (String, String, FirebaseFirestore, () -> Unit) -> Unit = {
                                 data = WorkoutData.SITUP,
                                 completed = true,
                                 createdAt = getMillisecondsBeginningDay(),
-                                workoutID = UUID.randomUUID().toString()
+                                workoutID = UUID.randomUUID().toString(),
+                                caloriesBurned = 74,
+                                note = "4 Sätze á 12 Wiederholungen, einfacher als sonst"
                         ),
                         Workout(
                                 data = WorkoutData.YOGA,
                                 completed = false,
                                 createdAt = getMillisecondsBeginningDay(),
-                                workoutID = UUID.randomUUID().toString()
+                                workoutID = UUID.randomUUID().toString(),
+                                caloriesBurned = 123
                         ),
                         Workout(
                                 data = WorkoutData.BICEPS_LONG_DUMBELL,
@@ -33,7 +36,8 @@ val registerUser: (String, String, FirebaseFirestore, () -> Unit) -> Unit = {
                                 createdAt = getMillisecondsOfLocalDate(
                                         LocalDate.of(2024, 7, 6)
                                 ),
-                                workoutID = UUID.randomUUID().toString()
+                                workoutID = UUID.randomUUID().toString(),
+                                caloriesBurned = 234
                         )
                 )
         )

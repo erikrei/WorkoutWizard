@@ -39,6 +39,7 @@ import com.example.workoutwizard.ui.WorkoutEditScreen
 import com.example.workoutwizard.ui.WorkoutPlanScreen
 import com.example.workoutwizard.ui.WorkoutScreen
 import com.example.workoutwizard.ui.WorkoutSection
+import com.example.workoutwizard.ui.WorkoutViewScreen
 import com.example.workoutwizard.ui.components.BottomBar
 import com.example.workoutwizard.ui.model.AuthViewModel
 import com.example.workoutwizard.ui.model.CaloriesViewModel
@@ -209,7 +210,10 @@ fun WorkoutWizardApp(
                     route = SubNavigationType.SUB_WORKOUT_PLAN.name
                 ) {
                     WorkoutPlanScreen(
-                        workoutViewModel = workoutViewModel
+                        workoutViewModel = workoutViewModel,
+                        viewWorkoutNavigation = {
+                            navController.navigate("workout/view/${it.workoutID}")
+                        }
                     )
                 }
 
@@ -266,6 +270,21 @@ fun WorkoutWizardApp(
                         workoutID = workoutID,
                         workoutViewModel = workoutViewModel,
                         onWorkoutChange = { navController.navigate(MainNavigationType.MAIN_OVERVIEW.name) }
+                    )
+                }
+
+                composable(
+                    route = "workout/view/{workoutToView}",
+                    arguments = listOf(
+                        navArgument("workoutToView") {
+                            type = NavType.StringType
+                        }
+                    )
+                ) {
+                    val workoutID = backstackEntry?.arguments?.getString("workoutToView") ?: ""
+                    WorkoutViewScreen(
+                        workoutID = workoutID,
+                        workoutViewModel = workoutViewModel
                     )
                 }
 

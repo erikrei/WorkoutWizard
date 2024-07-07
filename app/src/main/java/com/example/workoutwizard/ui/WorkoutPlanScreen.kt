@@ -1,6 +1,5 @@
 package com.example.workoutwizard.ui
 
-import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -40,7 +39,6 @@ import com.example.workoutwizard.helper.overviewDateStringMilliseconds
 import com.example.workoutwizard.ui.components.HeaderWithContent
 import com.example.workoutwizard.ui.components.MainSpacer
 import com.example.workoutwizard.ui.components.NavigationHeader
-import com.example.workoutwizard.ui.components.workout.WorkoutCard
 import com.example.workoutwizard.ui.components.workout.WorkoutCardPlan
 import com.example.workoutwizard.ui.model.WorkoutViewModel
 import com.example.workoutwizard.ui.theme.WorkoutWizardTheme
@@ -49,7 +47,8 @@ import com.example.workoutwizard.ui.theme.WorkoutWizardTheme
 @Composable
 fun WorkoutPlanScreen(
     modifier: Modifier = Modifier,
-    workoutViewModel: WorkoutViewModel = viewModel()
+    workoutViewModel: WorkoutViewModel = viewModel(),
+    viewWorkoutNavigation: (Workout) -> Unit = {}
 ) {
     val uiState by workoutViewModel.uiState.collectAsState()
     var expandDatePicker by remember { mutableStateOf(true) }
@@ -93,7 +92,8 @@ fun WorkoutPlanScreen(
         if (selectedWorkouts.isNotEmpty()) {
             MainSpacer()
             WorkoutPlanSelectedDayWorkouts(
-                workouts = selectedWorkouts
+                workouts = selectedWorkouts,
+                viewWorkoutNavigation = viewWorkoutNavigation
             )
         }
     }
@@ -102,7 +102,8 @@ fun WorkoutPlanScreen(
 @Composable
 fun WorkoutPlanSelectedDayWorkouts(
     modifier: Modifier = Modifier,
-    workouts: List<Workout>
+    workouts: List<Workout>,
+    viewWorkoutNavigation: (Workout) -> Unit = {}
 ) {
     HeaderWithContent(
         headerText = R.string.workout_plan_workouts_header,
@@ -115,7 +116,8 @@ fun WorkoutPlanSelectedDayWorkouts(
                     modifier = Modifier
                         .padding(
                             bottom = dimensionResource(id = R.dimen.same_content_space)
-                        )
+                        ),
+                    viewWorkoutNavigation = viewWorkoutNavigation
                 )
             }
         }
@@ -125,17 +127,14 @@ fun WorkoutPlanSelectedDayWorkouts(
 @Composable
 fun WorkoutPlanSingleWorkout(
     modifier: Modifier = Modifier,
-    workout: Workout
+    workout: Workout,
+    viewWorkoutNavigation: (Workout) -> Unit = {}
 ) {
-    val statusText =
-        if (workout.completed)
-            stringResource(id = R.string.workout_completed)
-        else stringResource(id = R.string.workout_uncompleted)
-
     WorkoutCardPlan(
         workout = workout,
         modifier = modifier
-            .fillMaxWidth()
+            .fillMaxWidth(),
+        viewWorkoutNavigation = viewWorkoutNavigation
     )
 }
 
