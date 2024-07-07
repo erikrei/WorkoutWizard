@@ -53,7 +53,8 @@ fun WorkoutScreen(
     workoutViewModel: WorkoutViewModel = viewModel(),
     addWorkoutNavigation: () -> Unit = {},
     planWorkoutNavigation: () -> Unit = {},
-    editWorkoutNavigation: (Workout) -> Unit = {}
+    editWorkoutNavigation: (Workout) -> Unit = {},
+    updateWorkouts: () -> Unit = {}
 ) {
     val uiState by workoutViewModel.uiState.collectAsState()
 
@@ -82,7 +83,8 @@ fun WorkoutScreen(
             addWorkoutNavigation = addWorkoutNavigation,
             planWorkoutNavigation = planWorkoutNavigation,
             workoutUiState = uiState,
-            editWorkoutNavigation = editWorkoutNavigation
+            editWorkoutNavigation = editWorkoutNavigation,
+            updateWorkouts = updateWorkouts
         )
     }
 }
@@ -212,7 +214,8 @@ fun WorkoutTodayPlanned(
     workoutUiState: WorkoutUiState,
     addWorkoutNavigation: () -> Unit = {},
     planWorkoutNavigation: () -> Unit = {},
-    editWorkoutNavigation: (Workout) -> Unit = {}
+    editWorkoutNavigation: (Workout) -> Unit = {},
+    updateWorkouts: () -> Unit = {}
 ) {
     val todayWorkouts = getTodayWorkouts(workoutUiState.workouts)
     if (todayWorkouts.isEmpty()) {
@@ -238,7 +241,10 @@ fun WorkoutTodayPlanned(
                             else dimensionResource(id = R.dimen.zero_dp)
                             WorkoutCardExpanded(
                                 workout = workout,
-                                removeWorkout = { workoutViewModel.removeWorkout(workout.workoutID) },
+                                removeWorkout = {
+                                    workoutViewModel.removeWorkout(workout.workoutID)
+                                    updateWorkouts()
+                                },
                                 editWorkoutNavigation = editWorkoutNavigation,
                                 modifier = Modifier
                                     .padding(bottom = bottomPadding)
