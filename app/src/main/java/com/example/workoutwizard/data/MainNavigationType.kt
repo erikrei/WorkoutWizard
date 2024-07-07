@@ -13,10 +13,6 @@ enum class MainNavigationType(
         mainIcon = R.drawable.home_24
     ),
     MAIN_WORKOUT(
-        mainHeader = R.string.main_workout_header,
-        mainIcon = R.drawable.exercise_24
-    ),
-    MAIN_PLAN(
         mainHeader = R.string.main_plan_header,
         mainIcon = R.drawable.list_24
     ),
