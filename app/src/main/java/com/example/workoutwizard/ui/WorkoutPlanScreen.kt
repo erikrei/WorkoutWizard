@@ -1,22 +1,32 @@
 package com.example.workoutwizard.ui
 
 import android.util.Log
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerState
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -30,6 +40,8 @@ import com.example.workoutwizard.helper.overviewDateStringMilliseconds
 import com.example.workoutwizard.ui.components.HeaderWithContent
 import com.example.workoutwizard.ui.components.MainSpacer
 import com.example.workoutwizard.ui.components.NavigationHeader
+import com.example.workoutwizard.ui.components.workout.WorkoutCard
+import com.example.workoutwizard.ui.components.workout.WorkoutCardPlan
 import com.example.workoutwizard.ui.model.WorkoutViewModel
 import com.example.workoutwizard.ui.theme.WorkoutWizardTheme
 
@@ -40,6 +52,7 @@ fun WorkoutPlanScreen(
     workoutViewModel: WorkoutViewModel = viewModel()
 ) {
     val uiState by workoutViewModel.uiState.collectAsState()
+    var expandDatePicker by remember { mutableStateOf(true) }
 
     val date = rememberDatePickerState(
         yearRange = IntRange(
@@ -64,13 +77,19 @@ fun WorkoutPlanScreen(
         )
         MainSpacer()
         WorkoutPlanSelectedDay(
-            datePickerState = date
+            datePickerState = date,
+            showDatePicker = expandDatePicker,
+            onChangeVisibility = { expandDatePicker = !expandDatePicker }
         )
         MainSpacer()
-        WorkoutPlanDatePicker(
-            datePickerState = date,
-            workouts = uiState.workouts
-        )
+        AnimatedVisibility(
+            visible = expandDatePicker
+        ) {
+            WorkoutPlanDatePicker(
+                datePickerState = date,
+                workouts = uiState.workouts
+            )
+        }
         if (selectedWorkouts.isNotEmpty()) {
             MainSpacer()
             WorkoutPlanSelectedDayWorkouts(
@@ -90,9 +109,13 @@ fun WorkoutPlanSelectedDayWorkouts(
         modifier = modifier
     ) {
         Column {
-            workouts.forEach {
+            workouts.sortedBy { it.completed }.forEach {
                 WorkoutPlanSingleWorkout(
-                    workout = it
+                    workout = it,
+                    modifier = Modifier
+                        .padding(
+                            bottom = dimensionResource(id = R.dimen.same_content_space)
+                        )
                 )
             }
         }
@@ -109,37 +132,56 @@ fun WorkoutPlanSingleWorkout(
             stringResource(id = R.string.workout_completed)
         else stringResource(id = R.string.workout_uncompleted)
 
-    Row(
+    WorkoutCardPlan(
+        workout = workout,
         modifier = modifier
-            .fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        Text(
-            text = stringResource(id = workout.data!!.title)
-        )
-        Text(
-            text = statusText
-        )
-    }
+            .fillMaxWidth()
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WorkoutPlanSelectedDay(
     modifier: Modifier = Modifier,
-    datePickerState: DatePickerState
+    datePickerState: DatePickerState,
+    showDatePicker: Boolean,
+    onChangeVisibility: () -> Unit = {}
 ) {
     val selectedDayText =
         if (datePickerState.selectedDateMillis != null)
             overviewDateStringMilliseconds(datePickerState.selectedDateMillis!!)
         else "Tag auswählen"
 
-    Text(
-        text = selectedDayText,
-        style = MaterialTheme.typography.titleLarge,
-        fontWeight = FontWeight.Bold,
+    val showIcon =
+        if (showDatePicker)
+            R.drawable.arrow_up_24
+        else R.drawable.arrow_down_24
+
+    val showIconContentDescription =
+        if (showDatePicker)
+            R.string.workout_plan_hide_picker
+        else R.string.workout_plan_show_picker
+
+    Row(
         modifier = modifier
-    )
+            .fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = selectedDayText,
+            style = MaterialTheme.typography.titleLarge,
+            fontWeight = FontWeight.Bold,
+        )
+        IconButton(
+            onClick = onChangeVisibility
+        ) {
+            Icon(
+                painter = painterResource(id = showIcon),
+                contentDescription = stringResource(id = showIconContentDescription)
+            )
+        }
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
