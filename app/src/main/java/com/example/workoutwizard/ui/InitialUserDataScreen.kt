@@ -49,7 +49,7 @@ fun InitialUserDataLayout(
 ) {
     val uiState by initialUserDataViewModel.uiState.collectAsState()
 
-    var stageNumber by remember { mutableIntStateOf(0) }
+    var stageNumber by remember { mutableIntStateOf(11) }
     val stage = InitialUserDataStage.entries[stageNumber]
 
     Box(
