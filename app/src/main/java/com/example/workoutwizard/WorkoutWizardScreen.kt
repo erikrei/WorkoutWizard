@@ -25,9 +25,11 @@ import com.example.workoutwizard.data.Datasource.mainNavigationItems
 import com.example.workoutwizard.data.InitialUserDataStage
 import com.example.workoutwizard.data.MainNavigationType
 import com.example.workoutwizard.data.SubNavigationType
+import com.example.workoutwizard.helper.db.saveCalories
 import com.example.workoutwizard.helper.db.saveInitialData
 import com.example.workoutwizard.helper.db.setCreatedInitialData
 import com.example.workoutwizard.helper.db.setWorkouts
+import com.example.workoutwizard.helper.getCaloriesAllowed
 import com.example.workoutwizard.ui.AuthLayout
 import com.example.workoutwizard.ui.CaloriesAdd
 import com.example.workoutwizard.ui.CaloriesScreen
@@ -107,7 +109,7 @@ fun WorkoutWizardApp(
                     ),
                 navController = navController,
 //                startDestination = SubNavigationType.SUB_WORKOUT_PLAN.name
-                startDestination = InitialUserDataStage.USER_DATA_INTRO.name
+                startDestination = AuthType.LOGIN.name
             ) {
                 // Authentifizierung
                 composable(
@@ -152,10 +154,16 @@ fun WorkoutWizardApp(
                             initialUserDataViewModel.uiState.value,
                             db
                         ) {
-                            setCreatedInitialData(
+                            saveCalories(
                                 auth.currentUser!!.uid,
+                                getCaloriesAllowed(initialUserDataViewModel.uiState.value),
                                 db
-                            )
+                            ) {
+                                setCreatedInitialData(
+                                    auth.currentUser!!.uid,
+                                    db
+                                )
+                            }
                             navController.navigate(MainNavigationType.MAIN_OVERVIEW.name)
                         }
                     }
