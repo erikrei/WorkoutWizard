@@ -63,7 +63,7 @@ fun WorkoutScreen(
             .verticalScroll(rememberScrollState())
     ) {
         NavigationHeader(
-            headerText = R.string.main_workout_header,
+            headerText = R.string.main_plan_header,
             sideContent = {
                 WorkoutHeaderSideContent(
                     onAddClick = addWorkoutNavigation,

@@ -34,6 +34,7 @@ import com.example.workoutwizard.ui.components.MainSpacer
 import com.example.workoutwizard.ui.components.NavigationHeaderText
 import com.example.workoutwizard.ui.components.TextIconButton
 import com.example.workoutwizard.ui.components.workout.WorkoutCard
+import com.example.workoutwizard.ui.components.workout.WorkoutCardPlan
 import com.example.workoutwizard.ui.components.workout.WorkoutCardSmall
 import com.example.workoutwizard.ui.model.CaloriesViewModel
 import com.example.workoutwizard.ui.model.WorkoutViewModel
@@ -46,7 +47,8 @@ fun OverviewScreen(
     caloriesViewModel: CaloriesViewModel = viewModel(),
     addWorkoutNavigation: () -> Unit = {},
     addCaloriesNavigation: () -> Unit = {},
-    editWorkoutNavigation: (Workout) -> Unit = {}
+    editWorkoutNavigation: (Workout) -> Unit = {},
+    viewWorkoutNavigation: (Workout) -> Unit = {}
 ) {
     val uiState by workoutViewModel.uiState.collectAsState()
 
@@ -59,13 +61,10 @@ fun OverviewScreen(
         OverviewTodayPlanned(
             plannedWorkouts = getTodayWorkouts(uiState.workouts),
             addWorkoutNavigation = addWorkoutNavigation,
-            editWorkoutNavigation = editWorkoutNavigation
+            editWorkoutNavigation = editWorkoutNavigation,
+            viewWorkoutNavigation = viewWorkoutNavigation
         )
         MainSpacer()
-//        OverviewRecentWorkouts(
-//            recentWorkouts = uiState.recentWorkouts
-//        )
-//        MainSpacer()
         OverviewCalories(
             caloriesViewModel = caloriesViewModel,
             addCaloriesNavigation = addCaloriesNavigation
@@ -108,7 +107,8 @@ fun OverviewTodayPlanned(
     modifier: Modifier = Modifier,
     plannedWorkouts: List<Workout>,
     addWorkoutNavigation: () -> Unit = {},
-    editWorkoutNavigation: (Workout) -> Unit = {}
+    editWorkoutNavigation: (Workout) -> Unit = {},
+    viewWorkoutNavigation: (Workout) -> Unit = {}
 ) {
     HeaderWithContent(
         headerText = R.string.overview_today_planned,
@@ -117,55 +117,36 @@ fun OverviewTodayPlanned(
         Row(
             modifier = Modifier.horizontalScroll(rememberScrollState())
         ) {
-            plannedWorkouts.forEachIndexed {
+            plannedWorkouts.sortedBy { it.completed }.forEachIndexed {
                     index, workout ->
                 val padding =
                     if (index < plannedWorkouts.size - 1) R.dimen.same_content_space
                     else R.dimen.zero_dp
-                WorkoutCard(
-                    workout = workout,
-                    editWorkoutNavigation = editWorkoutNavigation,
-                    modifier = Modifier.padding(
-                        end = dimensionResource(id = padding)
+                if (workout.completed) {
+                    WorkoutCardPlan(
+                        workout = workout,
+                        viewWorkoutNavigation = viewWorkoutNavigation,
+                        modifier = Modifier
+                            .padding(
+                                end = dimensionResource(id = padding)
+                            )
                     )
-                )
+                } else {
+                    WorkoutCard(
+                        workout = workout,
+                        editWorkoutNavigation = editWorkoutNavigation,
+                        modifier = Modifier
+                            .padding(
+                                end = dimensionResource(id = padding)
+                            )
+                    )
+                }
             }
         }
         if (plannedWorkouts.isEmpty()) {
             OverviewTodayWorkoutEmpty(
                 addWorkoutNavigation = addWorkoutNavigation
             )
-        }
-    }
-}
-
-@Composable
-fun OverviewRecentWorkouts(
-    modifier: Modifier = Modifier,
-    recentWorkouts: List<WorkoutData>
-) {
-    HeaderWithContent(
-        headerText = R.string.overview_recent_workouts,
-        style = MaterialTheme.typography.titleLarge,
-        modifier = modifier
-    ) {
-        if (recentWorkouts.isEmpty()) {
-
-        } else {
-            Column {
-                recentWorkouts.forEachIndexed {
-                        index, workout ->
-                    val padding =
-                        if (index < recentWorkouts.size - 1) R.dimen.same_content_space
-                        else R.dimen.zero_dp
-                    WorkoutCardSmall(
-                        workout = workout,
-                        modifier = Modifier
-                            .padding(bottom = dimensionResource(id = padding))
-                            .fillMaxWidth()
-                    )
-                }
-            }
         }
     }
 }

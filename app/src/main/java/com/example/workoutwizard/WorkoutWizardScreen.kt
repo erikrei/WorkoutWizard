@@ -170,7 +170,8 @@ fun WorkoutWizardApp(
                         caloriesViewModel = caloriesViewModel,
                         addWorkoutNavigation = { navController.navigate(SubNavigationType.SUB_WORKOUT_ADD.name) },
                         addCaloriesNavigation = { navController.navigate(SubNavigationType.SUB_CALORIES_ADD.name) },
-                        editWorkoutNavigation = { navController.navigate("workout/edit/${it.workoutID}")}
+                        editWorkoutNavigation = { navController.navigate("workout/edit/${it.workoutID}") },
+                        viewWorkoutNavigation = { navController.navigate("workout/view/${it.workoutID}") }
                     )
                 }
                 composable(
@@ -180,15 +181,11 @@ fun WorkoutWizardApp(
                         workoutViewModel = workoutViewModel,
                         addWorkoutNavigation = { navController.navigate(SubNavigationType.SUB_WORKOUT_ADD.name) },
                         planWorkoutNavigation = { navController.navigate(SubNavigationType.SUB_WORKOUT_PLAN.name) },
-                        updateWorkouts = { setWorkouts(auth.currentUser!!.uid, workoutViewModel.uiState.value.workouts, db, {}) },
+                        updateWorkouts = { setWorkouts(auth.currentUser!!.uid, workoutViewModel.uiState.value.workouts, db) {} },
                         editWorkoutNavigation = { navController.navigate("workout/edit/${it.workoutID}")}
                     )
                 }
-                composable(
-                    route = MainNavigationType.MAIN_PLAN.name
-                ) {
 
-                }
                 composable(
                     route = MainNavigationType.MAIN_CALORIES.name
                 ) {
@@ -247,8 +244,9 @@ fun WorkoutWizardApp(
                         workoutString = workoutString,
                         workoutViewModel = workoutViewModel,
                         onAddClick = {
-                            navController.navigate(MainNavigationType.MAIN_WORKOUT.name)
-                            setWorkouts(auth.currentUser!!.uid, workoutViewModel.uiState.value.workouts, db, {})
+                            setWorkouts(auth.currentUser!!.uid, workoutViewModel.uiState.value.workouts, db) {
+                                navController.navigate(MainNavigationType.MAIN_WORKOUT.name)
+                            }
                         },
                         snackbarHostState = snackbarHostState,
                         scope = scope,
@@ -268,9 +266,16 @@ fun WorkoutWizardApp(
                     val workoutID = backstackEntry?.arguments?.getString("workoutToEdit") ?: ""
                     WorkoutEditScreen(
                         workoutID = workoutID,
-                        workoutViewModel = workoutViewModel,
-                        onWorkoutChange = { navController.navigate(MainNavigationType.MAIN_OVERVIEW.name) }
-                    )
+                        workoutViewModel = workoutViewModel
+                    ) {
+                        setWorkouts(
+                            auth.currentUser!!.uid,
+                            workoutViewModel.uiState.value.workouts,
+                            db
+                        ) {
+                            navController.navigate(MainNavigationType.MAIN_OVERVIEW.name)
+                        }
+                    }
                 }
 
                 composable(

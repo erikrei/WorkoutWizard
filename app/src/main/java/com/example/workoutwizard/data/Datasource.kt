@@ -6,7 +6,6 @@ object Datasource {
     val mainNavigationItems = listOf(
         MainNavigationType.MAIN_OVERVIEW,
         MainNavigationType.MAIN_WORKOUT,
-        MainNavigationType.MAIN_PLAN,
         MainNavigationType.MAIN_CALORIES
     )
 
