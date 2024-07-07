@@ -61,6 +61,7 @@ import com.example.workoutwizard.ui.theme.WorkoutWizardTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import java.util.Calendar
+import java.util.UUID
 
 @Composable
 fun WorkoutAddScreen(
@@ -293,6 +294,7 @@ fun WorkoutAdd(
                     val newWorkout = Workout(
                         data = workout,
                         createdAt = getMillisecondsOfLocalDate(getLocalDateOfSelectedDay(date.selectedDateMillis!!)),
+                        workoutID = UUID.randomUUID().toString()
                     )
                     workoutViewModel.addWorkout(newWorkout)
                     scope.launch {

@@ -27,6 +27,7 @@ import com.example.workoutwizard.data.MainNavigationType
 import com.example.workoutwizard.data.SubNavigationType
 import com.example.workoutwizard.helper.db.saveInitialData
 import com.example.workoutwizard.helper.db.setCreatedInitialData
+import com.example.workoutwizard.helper.db.setWorkouts
 import com.example.workoutwizard.ui.AuthLayout
 import com.example.workoutwizard.ui.CaloriesAdd
 import com.example.workoutwizard.ui.CaloriesScreen
@@ -120,6 +121,7 @@ fun WorkoutWizardApp(
                                 snackbarHostState,
                                 navController,
                                 db,
+                                workoutViewModel
                             )
                         },
                         route = route
@@ -176,6 +178,7 @@ fun WorkoutWizardApp(
                         workoutViewModel = workoutViewModel,
                         addWorkoutNavigation = { navController.navigate(SubNavigationType.SUB_WORKOUT_ADD.name) },
                         planWorkoutNavigation = { navController.navigate(SubNavigationType.SUB_WORKOUT_PLAN.name) },
+                        updateWorkouts = { setWorkouts(auth.currentUser!!.uid, workoutViewModel.uiState.value.workouts, db, {}) },
                         editWorkoutNavigation = { navController.navigate("workout/edit/${it.workoutID}")}
                     )
                 }
@@ -240,6 +243,7 @@ fun WorkoutWizardApp(
                         workoutViewModel = workoutViewModel,
                         onAddClick = {
                             navController.navigate(MainNavigationType.MAIN_WORKOUT.name)
+                            setWorkouts(auth.currentUser!!.uid, workoutViewModel.uiState.value.workouts, db, {})
                         },
                         snackbarHostState = snackbarHostState,
                         scope = scope,

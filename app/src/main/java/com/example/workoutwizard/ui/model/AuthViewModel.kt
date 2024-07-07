@@ -28,8 +28,9 @@ class AuthViewModel: ViewModel() {
                            SnackbarHostState,
                            NavHostController,
                            FirebaseFirestore,
+                           WorkoutViewModel
                         ) -> Unit = {
-            auth, scope, snackbarHostState, navController, db ->
+            auth, scope, snackbarHostState, navController, db, workoutViewModel ->
                 var toastMessage: String
                 try {
                     auth.signInWithEmailAndPassword(
@@ -41,6 +42,7 @@ class AuthViewModel: ViewModel() {
                         val onSuccessLogin: (UserUiState?) -> Unit = {
                             user ->
                                 if (user != null) {
+                                    workoutViewModel.initWorkoutData(user.workouts)
                                     if (user.createdInitialData) {
                                         navController.navigate(MainNavigationType.MAIN_OVERVIEW.name)
                                     }

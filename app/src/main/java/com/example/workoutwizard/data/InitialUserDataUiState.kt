@@ -58,14 +58,14 @@ enum class InitialUserDataStage(
 }
 
 data class InitialUserDataUiState(
-    val sex: Int = -1,
-    val age: String = "",
-    val height: String = "",
-    val weight: String = "",
-    val sleepHours: String = "",
-    val workHours: String = "",
-    val workType: Int = -1,
-    val workoutHours: String = "",
-    val goal: Int = -1,
-    val goalSpeed: Int = -1
+    val sex: Int = 0,
+    val age: String = "27",
+    val height: String = "178",
+    val weight: String = "95",
+    val sleepHours: String = "4",
+    val workHours: String = "4",
+    val workType: Int = 2,
+    val workoutHours: String = "2",
+    val goal: Int = 0,
+    val goalSpeed: Int = 1
 )
