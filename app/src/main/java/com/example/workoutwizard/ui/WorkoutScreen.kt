@@ -233,7 +233,7 @@ fun WorkoutTodayPlanned(
             modifier = modifier
         ) {
             Column {
-                todayWorkouts.forEachIndexed {
+                todayWorkouts.sortedBy { it.completed }.forEachIndexed {
                     index, workout ->
                         val bottomPadding =
                             if (index < workoutUiState.workouts.size - 1)

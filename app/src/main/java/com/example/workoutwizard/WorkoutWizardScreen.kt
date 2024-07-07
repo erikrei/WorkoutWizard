@@ -105,6 +105,7 @@ fun WorkoutWizardApp(
                         )
                     ),
                 navController = navController,
+//                startDestination = SubNavigationType.SUB_WORKOUT_PLAN.name
                 startDestination = AuthType.LOGIN.name
             ) {
                 // Authentifizierung

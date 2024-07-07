@@ -93,6 +93,12 @@
     
     <!--  Workout Plan  -->
     <string name="workout_plan_workouts_header">Geplante Workouts</string>
+    <string name="workout_plan_show_picker">DatePicker anzeigen</string>
+    <string name="workout_plan_hide_picker">DatePicker verstecken</string>
+    <string name="workout_plan_overview">Workout anzeigen</string>
+    <string name="workout_plan_completed">Abgeschlossen</string>
+    <string name="workout_plan_open">Offen</string>
+    <string name="workout_plan_not_completed">Nicht abgeschlossen</string>
 
     <!--  Workout Edit  -->
     <string name="workout_edit_planned">Geplant</string>
