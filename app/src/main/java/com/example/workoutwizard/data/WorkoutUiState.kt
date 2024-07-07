@@ -3,8 +3,6 @@ package com.example.workoutwizard.data
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import com.example.workoutwizard.R
-import java.time.LocalDate
-import java.util.UUID
 
 enum class WorkoutData(
     @StringRes val title: Int,
@@ -51,12 +49,12 @@ enum class WorkoutData(
 data class Workout(
     val data: WorkoutData? = null,
     var createdAt: Long = 0,
-//    val caloriesBurned: Int,
+    val caloriesBurned: Int = 0,
     var completed: Boolean = false,
     val workoutID: String = "",
     var note: String = ""
 )
 
 data class WorkoutUiState(
-    val workouts: List<Workout> = mutableListOf(),
+    val workouts: List<Workout> = mutableListOf()
 )

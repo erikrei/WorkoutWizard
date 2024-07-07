@@ -41,7 +41,6 @@ fun WorkoutEditScreen(
 
     var note by remember { mutableStateOf(selectedWorkout?.note ?: "") }
 
-    
     if (selectedWorkout != null) {
         Column(
             modifier = modifier
